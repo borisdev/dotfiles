@@ -1,4 +1,4 @@
-# Version control your dot files (ie. disaster control) 
+# Version control your dot files in case of a disaster
 
 ## Inspiring references
 
@@ -10,13 +10,13 @@
 - Approach 2: turn your `$HOME` directory into a git repo (easiest though riskiest approach)
 - Approach 3: create a special git bare repo that points to the dotfiles in your `$HOME` directory (the approach I used)
 
-## The pros of the git bare repo approach
+## The pros of the git bare approach
 
 - avoids the complexity of Approach 1's requirement of making a symlink for each dotfile in your `$HOME` to your git repo 
 - avoids the risk of Approach 2's requirement to make your `$HOME` directory into a git repo
 - somewhat intuitive: run your `git commit` and `git push` commands directly from your `$HOME` repo after you edit your dotfiles
 
-## The cons of the git bare repo approach
+## The cons of the git bare approach
 
 - hard to grasp the "bare" repo concept at first
 - you must remember to create an alias, or otherwise remember long git commands
