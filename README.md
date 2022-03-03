@@ -24,6 +24,7 @@ These are good posts:
 
 - avoids the complexity cost of making a symlink for each dotfile in your `$HOME` to your git repo 
 - avoids the risk making your `$HOME` directory into a git repo
+- intuitive: run your `git commit` and `git push` commands directly from your `$HOME` repo after you edit your dotfiles
 
 # Steps to reproduce on my next laptop
 
