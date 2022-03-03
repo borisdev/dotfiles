@@ -1,3 +1,13 @@
+" terminal mode
+" =============
+"
+" true colors when in terminal mode
+set termguicolors
+
+" To map <Esc> to exit terminal-mode
+" Source neovim.io/doc/user/nvim_terminal_emulator.html
+:tnoremap <Esc> <C-\><C-n>
+
 set encoding=UTF-8
 set background=dark   
 set nowrap            
