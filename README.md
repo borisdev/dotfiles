@@ -1,12 +1,25 @@
+# Version control your dot files (ie. disaster control) 
+
 ## Inspiring references
 
 - [Awesome dotfiles](https://github.com/webpro/awesome-dotfiles)
 
-## Three potential git approaches to version control your dotfiles
+## Three approaches
 
-- create a special git bare repo that points to the dotfiles in your `$HOME` directory (the approach I used)
-- create a standard git repo with symlinks to your `$HOME` directory (most common approach) 
-- turn your `$HOME` directory into a git repo (easiest though riskiest approach)
+- Approach 1: create a standard git repo with symlinks to your `$HOME` directory (most common approach) 
+- Approach 2: turn your `$HOME` directory into a git repo (easiest though riskiest approach)
+- Approach 3: create a special git bare repo that points to the dotfiles in your `$HOME` directory (the approach I used)
+
+## The pros of the git bare repo approach
+
+- avoids the complexity of Approach 1's requirement of making a symlink for each dotfile in your `$HOME` to your git repo 
+- avoids the risk of Approach 2's requirement to make your `$HOME` directory into a git repo
+- somewhat intuitive: run your `git commit` and `git push` commands directly from your `$HOME` repo after you edit your dotfiles
+
+## The cons of the git bare repo approach
+
+- hard to grasp the "bare" repo concept at first
+- you must remember to create an alias, or otherwise remember long git commands
 
 ## What is a git "bare" repo?
 
@@ -19,17 +32,6 @@ These are good posts:
 
 - [Using a bare Git repo to get version control for my dotfiles](https://stegosaurusdormant.com/bare-git-repo/).
 - [How do you use "git --bare init" repository?](https://stackoverflow.com/questions/7632454/how-do-you-use-git-bare-init-repository)
-
-## The pros of the git bare repo approach
-
-- avoids the complexity cost of making a symlink for each dotfile in your `$HOME` to your git repo 
-- avoids the risk making your `$HOME` directory into a git repo
-- intuitive: run your `git commit` and `git push` commands directly from your `$HOME` repo after you edit your dotfiles
-
-## The cons of the git bare repo approach
-
-- hard to grasp at first
-- either remember to create alias or remember long git commands
 
 ## Steps to reproduce on my next laptop
 
@@ -50,7 +52,7 @@ better yet add this alias to your `.bashrc|.zshrc|etc` to avoid typos.
 ```bash
 alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
 ```
-then 
+then start version controlling your dotfiles 
 
 ```console
 dotgit add ~/.gitconfig
