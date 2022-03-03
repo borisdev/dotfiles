@@ -1,3 +1,21 @@
+" Avoid tabs
+" ===========
+"
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set smarttab
+set expandtab
+
+" NERDTree
+" =============
+"
+" show dotfiles
+let NERDTreeShowHidden=1
+" Exit Vim if NERDTree is the only window left.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+
 " terminal mode
 " =============
 "
@@ -8,55 +26,55 @@ set termguicolors
 " Source neovim.io/doc/user/nvim_terminal_emulator.html
 :tnoremap <Esc> <C-\><C-n>
 
-set encoding=UTF-8
+" UX configurations
+" =================
+"
+" basics
 set background=dark   
-set nowrap            
-set scrolloff=2       
 set number            
+set ruler              
+set title               
+
+" add two virtual lines after last line
+set scrolloff=2       
+
+" allow to move around file buffers w/o write
+" important for some plugins not to trigger by write event
+" https://vimtricks.com/p/what-is-set-hidden/
+set hidden              
+
+" research what these do
 set showmatch         
 set showmode          
 set showcmd            
-set ruler              
-set title               
 set wildmenu            
 set wildignore=*.o,*.obj,*.bak,*.exe,*.py[co],*.swp,*~,*.pyc,.svn
-set laststatus=2        
+set laststatus=2      
 set matchtime=2         
 set matchpairs+=<:>     
 set ignorecase         
 set smartcase          
 set smartindent         
-set smarttab            
 set magic           
 set bs=indent,eol,start 
-set tabstop=4           
-set shiftwidth=4        
-set expandtab       
 set lazyredraw         
 set confirm            
 set nobackup           
 set viminfo='20,\"500  
-set hidden              
 set history=50          
 set mouse=v             
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set smarttab
-set expandtab
 
-" Generate the file that is an index to search for all funcs in Python site-packages
-" In the project's directory and run ctags
-" ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./.python_tags $(python -c "import os, sys; print(' '.join('{}'.format(d) for d in sys.path if os.path.isdir(d)))")
-" add `.python_tags` to ~/.gitignore
+
+" CTAGS
+" =====
+"
+" i manually run `ctags` to index of python funcs of site-packages per project dir
 set tags+=./.python_tags
 
-" jump to the last position when reopening a file
-if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
 
-
+" Install Plugins
+" ===============
+"
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'neovim/nvim-lspconfig'
@@ -69,11 +87,18 @@ Plug 'scrooloose/nerdtree'
 call plug#end()
 
 
+" HELPERS
+" =======
+" jump to the last position when reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
 
 
-" *****  Playground for using the lua scripting language
 
-
+" Sandbox to learn Lua scripting
+" ==============================
+"
 lua print('output of example to embed a single lua script line')
 
 lua << EOF
