@@ -1,1 +1,1 @@
-print('hello from ~/config/nvim/lua/basic.lua')
+print('calling a print statement inside ~/config/nvim/lua/basic.lua')

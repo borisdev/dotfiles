@@ -1,3 +1,10 @@
+" Mouse
+" =====
+"
+" in all modes mouse can resize vim windows, select files in NERDTree, etc
+set mouse=a
+
+
 " Avoid tabs
 " ===========
 "
@@ -12,6 +19,9 @@ set expandtab
 "
 " show dotfiles
 let NERDTreeShowHidden=1
+" open nodes with a single mouse click
+let NERDTreeMouseMode=3
+
 " Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
@@ -84,6 +94,14 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" use vim to type in web text fields in chrome browser after installing chrome firenvim plugin 
+" https://jdhao.github.io/2020/01/01/firenvim_nvim_inside_browser/
+" The above setting works for Windows and Linux. For macOS, due to the reason that $PATH variable is changed inside browser, we need to run the following command on the command line:
+" nvim --headless -c "call firenvim#install(0, 'export PATH=\"$PATH\"')" -c quit
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+
 call plug#end()
 
 
@@ -94,7 +112,23 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
-
+" nerdtree-git-plugin
+" ====================
+"
+" Default mapping of git file status to symbols
+"
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+                \ 'Modified'  :'✹',
+                \ 'Staged'    :'✚',
+                \ 'Untracked' :'✭',
+                \ 'Renamed'   :'➜',
+                \ 'Unmerged'  :'═',
+                \ 'Deleted'   :'✖',
+                \ 'Dirty'     :'✗',
+                \ 'Ignored'   :'☒',
+                \ 'Clean'     :'✔︎',
+                \ 'Unknown'   :'?',
+                \ }
 
 " Sandbox to learn Lua scripting
 " ==============================
@@ -104,7 +138,7 @@ lua print('output of example to embed a single lua script line')
 lua << EOF
 print("output of example to embed many lua script lines")
 print("output of example to embed many lua script lines")
-EOF
 
-" call lua script ~/.config/nvim/lua/basic.lua
-lua require('basic')
+-- call lua script ~/.config/nvim/lua/basic.lua
+require('basic')
+EOF
