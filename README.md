@@ -23,12 +23,42 @@
 
 ## What is a git "bare" repo?
 
-In order to get one git repo directory that can point to pre-existing dotfiles that are
-spread across your `$HOME` directory we setup a "bare" git repo. 
+Imagine you have dotfiles spread across you laptop, both in your `$HOME` and git repo projects, as shown below.
 
-The "bare" word denotes that the snaphot or “working tree” of the source code is outside the repo.
+```console
+.
+├── .boto
+├── .config
+│   └── nvim
+│       ├── init.vim
+│       └── lua
+├── .gitconfig
+├── .gitignore
+├── .local
+│   └── share
+│       ├── firenvim
+│       └── nvim
+└── workspace
+    ├── my_dotfiles_repo.git
+    │   └── git_stuff
+    ├── project_A
+    │   ├── .git
+    │   ├── .local
+    │   └── src
+    └── project_B
+        ├── .git
+        ├── .docker-compose.local.yml
+        └── src
+```
+The requirements: You want to version control these dotfiles outside of other git repo projects shared by team members and 
+you don't want to turn your `$HOME` into a git repo.
 
-These are good posts:
+A bare git repo directory can point to these dotfiles that are
+spread across your laptop.
+
+The "bare" word describes that the snaphot of what you edit (ie. working tree) is outside the git repo's directory.
+
+These posts go into more detail:
 
 - [Using a bare Git repo to get version control for my dotfiles](https://stegosaurusdormant.com/bare-git-repo/).
 - [How do you use "git --bare init" repository?](https://stackoverflow.com/questions/7632454/how-do-you-use-git-bare-init-repository)
