@@ -1,4 +1,4 @@
-# The git bare approach to version control your dot files
+# A git bare approach to version control your dot files
 
 ## Inspiring references
 
