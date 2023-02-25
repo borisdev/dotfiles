@@ -1,4 +1,4 @@
-# Version control your dot files in case of a disaster
+# A git bare approach to version control your dot files
 
 ## Inspiring references
 
