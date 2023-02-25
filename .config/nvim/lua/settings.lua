@@ -1,15 +1,26 @@
 -- quick way to convert settings in init.vim or .vimrc to init.lua
 -- convert tab to space
+--
+-- " Spell-check Markdown files and Git Commit Messages
+-- "autocmd FileType markdown setlocal complete+=kspell
+-- "autocmd FileType gitcommit setlocal complete+=kspell
 vim.cmd([[
+autocmd FileType markdown setlocal spell
+autocmd FileType gitcommit setlocal spell
+autocmd BufWritePre *.py %s/\s\+$//e " removes trailing whitespace from python files on save
+autocmd BufWritePost *.py call Flake8()
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set smarttab
 set expandtab
+set textwidth=80
+let g:syntastic_python_flake8_config_file='.flake8'
+xnoremap p pgvy  " https://stackoverflow.com/questions/7163947/paste-multiple-times
 ]])
 
 -- general way to set vim settings to lua langauge
-vim.opt.mouse = "a" -- mouse active in all modes
+vim.opt.mouse="a" -- mouse active in all modes
 vim.opt.background = "dark" 
 vim.opt.number = true                        
 vim.opt.ruler = true                        

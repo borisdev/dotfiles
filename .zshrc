@@ -4,6 +4,12 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# Load AWS CREDENTIALS env variables
+#
+zsh aws_credentials.sh
+
+
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -119,3 +125,22 @@ unset __conda_setup
 
 alias vim=nvim
 alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
+# alias ls='ls -GFh' # Colorize output, add file type indicator, and put sizes in human readable format
+alias ls='ls -GFhl' # Same as above, but in long listing format
+
+export PATH="$HOME/.poetry/bin:$PATH"
+
+# Created by `pipx` on 2022-12-20 23:26:31
+export PATH="$PATH:/Users/borisdev/.local/bin"
+
+# To activate completions for zsh you need to have bashcompinit enabled in zsh:
+
+autoload -U bashcompinit
+bashcompinit
+
+# Afterwards you can enable completion for pipx:
+
+# eval "$(register-python-argcomplete pipx)"
+
+alias python=python3
+alias pip=pip3
