@@ -5,6 +5,7 @@
 -- "autocmd FileType markdown setlocal complete+=kspell
 -- "autocmd FileType gitcommit setlocal complete+=kspell
 vim.cmd([[
+autocmd BufWritePre *.py Black
 autocmd FileType markdown setlocal spell
 autocmd FileType gitcommit setlocal spell
 autocmd BufWritePre *.py %s/\s\+$//e " removes trailing whitespace from python files on save

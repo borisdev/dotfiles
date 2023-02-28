@@ -9,5 +9,10 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'scrooloose/nerdtree'
 Plug 'nvie/vim-flake8'
 Plug 'github/copilot.vim'
+Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
+Plug 'nvim-tree/nvim-tree.lua'
+Plug 'psf/black', { 'branch': 'stable' }
 call plug#end()
 ]])
+
+-- https://black.readthedocs.io/en/stable/integrations/editors.html#vim
