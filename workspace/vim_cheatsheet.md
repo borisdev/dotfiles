@@ -1,7 +1,0 @@
-# vim Cheatsheet
-
-
-```
-gq} 
-z=
-```

@@ -126,7 +126,7 @@ unset __conda_setup
 alias vim=nvim
 alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
 # alias ls='ls -GFh' # Colorize output, add file type indicator, and put sizes in human readable format
-alias ls='ls -GFhl' # Same as above, but in long listing format
+alias ls='ls -aGFhl' # Same as above, but in long listing format
 
 export PATH="$HOME/.poetry/bin:$PATH"
 
