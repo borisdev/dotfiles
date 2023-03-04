@@ -1,0 +1,7 @@
+# vim Cheatsheet
+
+
+```
+gq} 
+z=
+```
