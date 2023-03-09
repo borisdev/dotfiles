@@ -144,3 +144,13 @@ bashcompinit
 
 alias python=python3
 alias pip=pip3
+
+# For jekyll, which is for making a landing page using github pages, based on
+# static md file and a build into html
+# https://jekyllrb.com/docs/installation/macos/
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+chruby ruby-3.1.3
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+chruby ruby-3.1.3
