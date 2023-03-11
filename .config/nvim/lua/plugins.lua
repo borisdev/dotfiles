@@ -12,6 +12,7 @@ Plug 'github/copilot.vim'
 Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
 Plug 'nvim-tree/nvim-tree.lua'
 Plug 'psf/black', { 'branch': 'stable' }
+Plug 'rhysd/vim-grammarous'
 call plug#end()
 ]])
 
