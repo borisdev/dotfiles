@@ -110,3 +110,19 @@ require('lspconfig')['rust_analyzer'].setup{
       ["rust-analyzer"] = {}
     }
 }
+
+
+-- Load Grammarour
+vim.cmd('let g:grammarour_enabled = 1')
+
+-- Set the language for the current buffer
+vim.cmd('let g:grammarour_languages = ["en_US"]')
+
+-- Set the path to the language tool executable
+vim.cmd("let g:grammarous#languagetool_cmd = 'languagetool'")
+
+-- Set the path to the grammarour executable
+-- vim.cmd('let g:grammarour_path = "/path/to/grammarour"')
+--
+-- clear highlights
+vim.cmd("nnoremap <esc><esc> :noh<return>")

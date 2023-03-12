@@ -154,9 +154,3 @@ chruby ruby-3.1.3
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 chruby ruby-3.1.3
-
-
-# vim-grammarous
-# http://www.mishou.be/2022/02/20/neovim-how-to-set-up-neovim-with-lua-ver-1/
-# 
-export PATH="/usr/local/opt/openjdk/bin:$PATH"
