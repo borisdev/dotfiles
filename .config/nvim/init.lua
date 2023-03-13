@@ -112,17 +112,36 @@ require('lspconfig')['rust_analyzer'].setup{
 }
 
 
--- Load Grammarour
-vim.cmd('let g:grammarour_enabled = 1')
-
--- Set the language for the current buffer
-vim.cmd('let g:grammarour_languages = ["en_US"]')
-
--- Set the path to the language tool executable
-vim.cmd("let g:grammarous#languagetool_cmd = 'languagetool'")
-
--- Set the path to the grammarour executable
--- vim.cmd('let g:grammarour_path = "/path/to/grammarour"')
---
--- clear highlights
+-- after a search then clear highlights by hitting ESC 2x 
 vim.cmd("nnoremap <esc><esc> :noh<return>")
+
+
+
+-- Only 1 in the 4 GRAMMER CHECKERS I got to work
+-- all depend on the java language tool
+-- test your java language tool is installed and working...
+-- echo “This is is a test.” | java -jar  /opt/homebrew/Cellar/languagetool/6.0/libexec/languagetool-commandline.jar -c utf-8 -l en-US
+
+-- 1. Supposedlky the best one
+vim.cmd("let g:grammarous#languagetool_jar = '/Users/borisdev/workspace/languagetool/languagetool-standalone/target/LanguageTool-6.1-SNAPSHOT/LanguageTool-6.1-SNAPSHOT/languagetool-commandline.jar'")
+
+-- 2. 
+vim.cmd("let g:languagetool_jar = '/Users/borisdev/workspace/languagetool/languagetool-standalone/target/LanguageTool-6.1-SNAPSHOT/LanguageTool-6.1-SNAPSHOT/languagetool-commandline.jar'")
+vim.cmd("let g:langtool_jar = '/Users/borisdev/workspace/languagetool/languagetool-standalone/target/LanguageTool-6.1-SNAPSHOT/LanguageTool-6.1-SNAPSHOT/languagetool-commandline.jar'")
+
+-- 3. ALE does work with languagetool ??
+vim.g.ale_linters = {
+  markdown = {'languagetool'},
+}
+
+-- 4. LANGTOOL -- works!! BUT super slow sync grammer checker (the above ones did not
+-- work...weird errors) 
+-- https://github.com/Konfekt/vim-langtool
+-- To automatically open the location-list window after LangTool
+vim.cmd("autocmd QuickFixCmdPost lmake lwindow") 
+-- To automatically run LangTool after saving the modifications to a text, mail or markdown file,
+-- vim.cmd("autocmd FileType text,mail,markdown autocmd BufWrite <buffer=abuf> LangTool")
+
+-- let s:enablecategories = 'CREATIVE_WRITING,WIKIPEDIA' .
+-- let s:enable = 'PASSIVE_VOICE,TIRED_INTENSIFIERS'
+vim.g.langtool_parameters = "--disable WHITESPACE_RULE"

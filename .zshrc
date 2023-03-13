@@ -154,3 +154,11 @@ chruby ruby-3.1.3
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 chruby ruby-3.1.3
+
+# Objective: use the languagetool to check grammar in markdown files, using neovim
+# The PATH variable is a list of directories that the OS will search through
+# Below we are adding the languagetool directory to the PATH variable sort of
+# like y = y + 1 in python
+# export PATH="$PATH:$HOME/opt/homebrew/Cellar/languagetool/6.0/libexec/languagetool-commandline.jar"
+export PATH="$PATH:$HOME/workspace/languagetool/languagetool-standalone/target/LanguageTool-6.1-SNAPSHOT/LanguageTool-6.1-SNAPSHOT/languagetool-commandline.jar"
+alias languagetool="java -jar $HOME/workspace/languagetool/languagetool-standalone/target/LanguageTool-6.1-SNAPSHOT/LanguageTool-6.1-SNAPSHOT/languagetool-commandline.jar"
