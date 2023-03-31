@@ -1,6 +1,10 @@
 require('settings')
 require('plugins')
 require'lspconfig'.pyright.setup{}
+require('glow').setup({
+  style = "dark",
+  width = 120,
+})
 
 
 -- https://github.com/nvim-tree/nvim-tree.lua

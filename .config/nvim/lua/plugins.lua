@@ -1,5 +1,6 @@
 vim.cmd([[ 
 call plug#begin(stdpath('data') . '/plugged')
+Plug 'ellisonleao/glow.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'vim-airline/vim-airline'
