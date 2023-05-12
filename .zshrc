@@ -3,8 +3,23 @@
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+#
+#
+plugins=(
+    git 
+)
+# Learn about these plugins some other day...
+#
+#    fzf
+#    web-search
+#    zsh-syntax-highlighting
+#    zsh-autosuggestions,
+#    zsh-syntax-highlighting,
+#    zsh-completions,
+#
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+
 # Load AWS CREDENTIALS env variables
 # zsh aws_credentials.sh
 ZSH_THEME="robbyrussell"
@@ -13,18 +28,7 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
 
-plugins=(
-    git 
-    fzf
-    web-search
-)
 
-# Learn about this shit some other day...
-#
-#    zsh-autosuggestions,
-#    zsh-syntax-highlighting,
-#    zsh-completions,
-#)
 
 source $ZSH/oh-my-zsh.sh
 
