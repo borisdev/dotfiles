@@ -6,7 +6,12 @@
 #
 #
 plugins=(
+    jsontools
+    zsh-syntax-highlighting
+    zsh-autosuggestions
+    copybuffer
     git 
+    fzf
 )
 # Learn about these plugins some other day...
 #
@@ -103,3 +108,5 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     # <<< conda initialize <<<
 
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
