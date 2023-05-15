@@ -1,7 +1,7 @@
-# use zsh instead of bash so that we can take advantage of oh-my-zsh CLI plugins
+# use zsh instead of bash to take advantage of oh-my-zsh CLI plugins
 sudo chsh "$(id -un)" --shell "/usr/bin/zsh"
 
-# install my snowflake ubuntu libraries
+# ubuntu packages needed for my workflow
 apt-get clean
 apt-get update \
 && apt-get upgrade -y \
@@ -10,10 +10,10 @@ apt-get update \
     fzf
 
 
-# custom oh-my-zsh plugins for fast CLI work (I think)
+# oh-my-zsh plugins that require git clone installation
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
-# one day replace this wit pip install requirements.txt
+# TODO: pip install requirements.txt
 pip install openai
 pip install ipdb
