@@ -1,45 +1,5 @@
-## TOP PART: FOR GITHUB CODE SPACES AND MY MAC LAPTOP ##
-## BOTTOM PART: JUST MY MAC LAPTOP ##
-
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-#
-#
-plugins=(
-    jsontools
-    zsh-syntax-highlighting
-    zsh-autosuggestions
-    copybuffer
-    git 
-    fzf
-    # zsh_codex
-)
-bindkey '^X' create_completion
-# Learn about these plugins some other day...
-#
-#    fzf
-#    web-search
-#    zsh-syntax-highlighting
-#    zsh-autosuggestions,
-#    zsh-syntax-highlighting,
-#    zsh-completions,
-#
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# Load AWS CREDENTIALS env variables
-# zsh aws_credentials.sh
-ZSH_THEME="robbyrussell"
-DISABLE_MAGIC_FUNCTIONS="true"
-ENABLE_CORRECTION="true"
-COMPLETION_WAITING_DOTS="true"
-HIST_STAMPS="mm/dd/yyyy"
-
-
-
-source $ZSH/oh-my-zsh.sh
-
 export LANG=en_US.UTF-8
+
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='nvim'
@@ -48,16 +8,9 @@ else
 fi
 
 
+alias ls='ls -aGFhl --color=auto'
 alias vi=nvim
 alias vim=nvim
-alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
-# alias ls='ls -GFh' # Colorize output, add file type indicator, and put sizes in human readable format
-alias ls='ls -aGFhl' # Same as above, but in long listing format
-
-# To activate completions for zsh you need to have bashcompinit enabled in zsh:
-autoload -U bashcompinit
-bashcompinit
-
 alias python=python3
 alias pip=pip3
 
@@ -65,6 +18,37 @@ alias pip=pip3
 ## JUST FOR MY MAC LAPTOP ##
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
+
+    DISABLE_MAGIC_FUNCTIONS="true"
+    ENABLE_CORRECTION="true"
+    COMPLETION_WAITING_DOTS="true"
+    HIST_STAMPS="mm/dd/yyyy"
+
+    # oh my zsh fancy CLI stuff just for my laptop
+    export ZSH="$HOME/.oh-my-zsh"
+    source $ZSH/oh-my-zsh.sh
+    ZSH_THEME="robbyrussell"
+
+    ## oh-my-zsh plugins that require git clone installation
+    # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    # git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+    alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
+
+    plugins=(
+        jsontools
+        zsh-syntax-highlighting
+        zsh-autosuggestions
+        copybuffer
+        git 
+        fzf
+        # zsh_codex
+    )
+
+    # To activate completions for zsh you need to have bashcompinit enabled in zsh:
+    autoload -U bashcompinit
+    bashcompinit
+
 
     export PATH="$HOME/.poetry/bin:$PATH"
     # Created by `pipx` on 2022-12-20 23:26:31
@@ -108,7 +92,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     fi
     unset __conda_setup
     # <<< conda initialize <<<
+    #
+    #
+    
+    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
