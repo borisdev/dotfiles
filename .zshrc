@@ -9,7 +9,6 @@ fi
 
 
 alias ls='ls -aGFhl --color=auto'
-alias vi=nvim
 alias vim=nvim
 alias python=python3
 alias pip=pip3
