@@ -12,7 +12,9 @@ plugins=(
     copybuffer
     git 
     fzf
+    # zsh_codex
 )
+bindkey '^X' create_completion
 # Learn about these plugins some other day...
 #
 #    fzf
