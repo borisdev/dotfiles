@@ -1,14 +1,14 @@
-# gh codespace not using ubuntu
+# gh codespace is not using ubuntu
+
+# copy over my personal neovim editor customizations
+cp -r /workspaces/.codespaces/.persistedshare/dotfiles/.config/nvim .config/
+
 
 # catch syntax errors
 pip install pyright
 
-# pip install openai
-# pip install black
-
 # bash to zsh
-exec zsh
-# sudo chsh "$(id -un)" --shell "/usr/bin/zsh" 
+sudo chsh "$(id -un)" --shell "/usr/bin/zsh" 
 
 # correct neovim depends on brew https://docs.brew.sh/Homebrew-on-Linux
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)" < /dev/null
@@ -18,8 +18,8 @@ test -r ~/.bash_profile && echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"
 echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.zshrc
 brew install neovim
 
-# copy over my nvim config
-cp -r /workspaces/.codespaces/.persistedshare/dotfiles/.config/nvim .config/
+# source .zshrc since we changed it above
+exec /bin/zsh
 
 # auto-install vim plugins
-nvim -es -u .config/nvim/lua/plugins.lua -i NONE -c "PlugInstall" -c "qa"
+zsh -c nvim -es -u .config/nvim/lua/plugins.lua -i NONE -c "PlugInstall" -c "qa"
