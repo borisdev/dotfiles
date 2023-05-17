@@ -1,37 +1,31 @@
-export LANG=en_US.UTF-8
-
-
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='nvim'
 else
   export EDITOR='vim'
 fi
 
+DISABLE_MAGIC_FUNCTIONS="true"
+ENABLE_CORRECTION="true"
+COMPLETION_WAITING_DOTS="true"
+HIST_STAMPS="mm/dd/yyyy"
 
-alias ls='ls -aGFhl --color=auto'
+export ZSH="$HOME/.oh-my-zsh"
+source $ZSH/oh-my-zsh.sh
+ZSH_THEME="robbyrussell"
+
+plugins=(
+    git 
+)
+
+alias ls='ls -aGFhl'
 alias vim=nvim
 alias python=python3
 alias pip=pip3
 
 
-## JUST FOR MY MAC LAPTOP ##
-
-if [[ "$OSTYPE" == "darwin"* ]]; then
-
-    DISABLE_MAGIC_FUNCTIONS="true"
-    ENABLE_CORRECTION="true"
-    COMPLETION_WAITING_DOTS="true"
-    HIST_STAMPS="mm/dd/yyyy"
-
-    # oh my zsh fancy CLI stuff just for my laptop
-    export ZSH="$HOME/.oh-my-zsh"
-    source $ZSH/oh-my-zsh.sh
-    ZSH_THEME="robbyrussell"
-
-    ## oh-my-zsh plugins that require git clone installation
-    # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-    # git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-
+#### ONLY FOR MAC LAPTOP ####
+if [[ $(uname) == "Darwin" ]]; then
+  echo "This command will only run on macOS"
     alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
 
     plugins=(
@@ -43,6 +37,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         fzf
         # zsh_codex
     )
+
+    ## oh-my-zsh plugins that require git clone installation
+    # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    # git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
     # To activate completions for zsh you need to have bashcompinit enabled in zsh:
     autoload -U bashcompinit
@@ -92,9 +90,5 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     unset __conda_setup
     # <<< conda initialize <<<
     #
-    #
-    
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 fi
-
