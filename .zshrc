@@ -1,13 +1,6 @@
-if [[ "$(uname)" == "Linux" ]]; then
-  echo "Running on Linux"
-  unset PS1
-fi
-
-#if [[ -n $SSH_CONNECTION ]]; then
-#  export EDITOR='nvim'
-#else
-#  export EDITOR='vim'
-#fi
+alias vim=nvim
+alias python=python3
+alias pip=pip3
 
 DISABLE_MAGIC_FUNCTIONS="true"
 ENABLE_CORRECTION="true"
@@ -20,18 +13,21 @@ plugins=(
     git 
 )
 source $ZSH/oh-my-zsh.sh
-POWERLEVEL9K_MODE="git"
 
-alias vim=nvim
-alias python=python3
-alias pip=pip3
+# POWERLEVEL9K_MODE="git"
 
-plugins=(
-    git
-)
-# for linux only
-# define this after oh-my-zsh plugins so that it can override
-alias ls="ls -aGFhl --color"
+
+if [[ "$(uname)" == "Linux" ]]; then
+  echo "Running on Linux"
+  unset PS1
+  export PATH="/home/linuxbrew/.linuxbrew/bin:${PATH}"
+    plugins=(
+        git
+    )
+    alias ls="ls -aGFhl --color"
+fi
+
+
 
 #### ONLY FOR MAC LAPTOP ####
 if [[ $(uname) == "Darwin" ]]; then
