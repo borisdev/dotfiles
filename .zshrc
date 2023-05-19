@@ -1,8 +1,13 @@
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nvim'
-else
-  export EDITOR='vim'
+if [[ "$(uname)" == "Linux" ]]; then
+  echo "Running on Linux"
+  unset PS1
 fi
+
+#if [[ -n $SSH_CONNECTION ]]; then
+#  export EDITOR='nvim'
+#else
+#  export EDITOR='vim'
+#fi
 
 DISABLE_MAGIC_FUNCTIONS="true"
 ENABLE_CORRECTION="true"
@@ -10,18 +15,23 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
 
 export ZSH="$HOME/.oh-my-zsh"
-source $ZSH/oh-my-zsh.sh
 ZSH_THEME="robbyrussell"
-
 plugins=(
     git 
 )
+source $ZSH/oh-my-zsh.sh
+POWERLEVEL9K_MODE="git"
 
-alias ls='ls -aGFhl'
 alias vim=nvim
 alias python=python3
 alias pip=pip3
 
+plugins=(
+    git
+)
+# for linux only
+# define this after oh-my-zsh plugins so that it can override
+alias ls="ls -aGFhl --color"
 
 #### ONLY FOR MAC LAPTOP ####
 if [[ $(uname) == "Darwin" ]]; then
@@ -37,6 +47,8 @@ if [[ $(uname) == "Darwin" ]]; then
         fzf
         # zsh_codex
     )
+    source $ZSH/oh-my-zsh.sh
+    alias ls='ls -aGFhl'
 
     ## oh-my-zsh plugins that require git clone installation
     # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
