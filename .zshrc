@@ -19,7 +19,8 @@ source $ZSH/oh-my-zsh.sh
 
 if [[ "$(uname)" == "Linux" ]]; then
   echo "Running on Linux"
-  unset PS1
+  # PS1='linux$(__git_ps1 "(%s)") > '
+  # unset PS1
   export PATH="/home/linuxbrew/.linuxbrew/bin:${PATH}"
     plugins=(
         git
