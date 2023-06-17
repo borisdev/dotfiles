@@ -94,14 +94,30 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 
+
 local lsp_flags = {
   -- This is the default in Nvim 0.7+
   debounce_text_changes = 150,
 }
+
 require('lspconfig')['pyright'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
+    -- default laptop host's pyright
+    cmd = { "pyright-langserver", "--stdio" },
+    -- connect to pyright langauge server inside the docker container
+    -- manually test this --> docker exec -it devcontainer_langchain_1 pyright-langserver --stdio
+    -- cmd = { 'docker', 'exec', '-it',  'devcontainer_langchain_1', 'pyright-langserver', '--stdio' },
+    -- root_dir = lspconfig.util.root_pattern('setup.py', 'setup.cfg', 'pyproject.toml', 'requirements.txt', '.git'),
 }
+
+ -- logs here --> vim ~/.cache/nvim/log
+ -- WARN  2023-01-05T15:05:56.322 5393  deadly_signal:161: got signal 1 (SIGHUP)
+ --
+ --
+ -- https://github.com/lspcontainers/lspcontainers.nvim
+
+
 require('lspconfig')['tsserver'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
@@ -123,3 +139,10 @@ vim.cmd("nnoremap <esc><esc> :noh<return>")
 -- gramerous depends on java languagetool below 6.0 because --api is deprecate in 6.0
 -- Download https://www.languagetool.org/download/LanguageTool-5.9.zip'
 -- cp -rf ~/Downloads/LanguageTool-5.9 .local/share/nvim/plugged/vim-grammarous/misc/
+--
+
+-- pre-view mypy errors after the write
+vim.cmd([[ 
+call neomake#configure#automake('w')
+let g:neomake_open_list = 2
+]])

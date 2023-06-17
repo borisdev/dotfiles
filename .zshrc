@@ -33,6 +33,7 @@ fi
 #### ONLY FOR MAC LAPTOP ####
 if [[ $(uname) == "Darwin" ]]; then
   echo "This command will only run on macOS"
+    export DOCKER_SCAN_SUGGEST=false
     alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
 
     plugins=(
