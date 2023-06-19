@@ -43,8 +43,9 @@ if [[ $(uname) == "Darwin" ]]; then
         copybuffer
         git 
         fzf
-        # zsh_codex
+        zsh_codex
     )
+    bindkey '^X' create_completion
     source $ZSH/oh-my-zsh.sh
     alias ls='ls -aGFhl'
 
