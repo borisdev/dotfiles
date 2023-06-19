@@ -145,4 +145,9 @@ vim.cmd("nnoremap <esc><esc> :noh<return>")
 vim.cmd([[ 
 call neomake#configure#automake('w')
 let g:neomake_open_list = 2
+let g:neomake_python_mypy_maker = {
+    \ 'exe': 'mypy',
+    \ 'args': ['%'],
+    \ 'errorformat': '%f:%l:%c: %trror: %m,%f:%l:%c: %tarning: %m,%f:%l:%c: %tote: %m',
+    \ }
 ]])
