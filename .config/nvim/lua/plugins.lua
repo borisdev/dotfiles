@@ -1,6 +1,7 @@
 vim.cmd([[ 
 
 "
+" For using my editor config inside the cloud github codespace via a browser
 " Rationale: When the vim-plug package manager does not exist then it must be auto installed in new containers and laptops
 " Source: modified this https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
 " We want this --> $HOME/.local/share/nvim/site/autoload/plug.vim
