@@ -1,6 +1,7 @@
 alias vim=nvim
 alias python=python3
 alias pip=pip3
+alias rm="echo Use 'rmtrash' instead"
 
 DISABLE_MAGIC_FUNCTIONS="true"
 ENABLE_CORRECTION="true"

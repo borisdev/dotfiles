@@ -1,9 +1,14 @@
+-- stops automatic line wrappinng on long text
+-- vim.cmd("set formatoptions-=t")
+
+
 -- quick way to convert settings in init.vim or .vimrc to init.lua
 -- convert tab to space
 --
 -- " Spell-check Markdown files and Git Commit Messages
 -- "autocmd FileType markdown setlocal complete+=kspell
 -- "autocmd FileType gitcommit setlocal complete+=kspell
+--  STOP set textwidth=80
 vim.cmd([[
 autocmd BufWritePre *.py Black
 autocmd FileType markdown setlocal spell
@@ -15,7 +20,6 @@ set shiftwidth=4
 set softtabstop=4
 set smarttab
 set expandtab
-set textwidth=80
 let g:syntastic_python_flake8_config_file='.flake8'
 xnoremap p pgvy  " https://stackoverflow.com/questions/7163947/paste-multiple-times
 ]])
