@@ -1,3 +1,16 @@
+
+
+vim.cmd([[
+    set softtabstop=4
+    set tabstop=4
+    set shiftwidth=4
+    set expandtab
+    ]])
+
+vim.cmd([[
+nnoremap <leader><leader><leader>p :r !echo; lpstat -p \| sed 's/printer //g' \| sed 's/is idle.  enabled since.*//g'; echo<cr>
+]])
+
 -- stops automatic line wrappinng on long text
 -- vim.cmd("set formatoptions-=t")
 

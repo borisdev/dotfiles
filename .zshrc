@@ -3,6 +3,7 @@ alias python=python3
 alias pip=pip3
 alias rm="echo use: trash"
 
+export PYTHONBREAKPOINT=ipdb.set_trace
 DISABLE_MAGIC_FUNCTIONS="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
