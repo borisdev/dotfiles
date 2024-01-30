@@ -24,6 +24,7 @@ nnoremap <leader><leader><leader>p :r !echo; lpstat -p \| sed 's/printer //g' \|
 --  STOP set textwidth=80
 vim.cmd([[
 autocmd BufWritePre *.py Black
+autocmd BufWritePre *.py Isort
 autocmd FileType markdown setlocal spell
 autocmd FileType gitcommit setlocal spell
 autocmd BufWritePre *.py %s/\s\+$//e " removes trailing whitespace from python files on save

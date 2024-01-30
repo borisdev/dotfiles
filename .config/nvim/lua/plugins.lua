@@ -15,6 +15,8 @@ endif
 
 "
 " List of the vim plugins (requirements.txt)
+
+" firevim is a plugin that allows you to edit textareas in your browser with Neovim
 "
 
 call plug#begin(stdpath('data') . '/plugged')
@@ -33,5 +35,7 @@ Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
 Plug 'nvim-tree/nvim-tree.lua'
 Plug 'rhysd/vim-grammarous'
 Plug 'psf/black', { 'branch': 'stable' }
+Plug 'fisadev/vim-isort'
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 call plug#end()
 ]])
