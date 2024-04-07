@@ -14,6 +14,8 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
 vim.g.maplocalleader = "\\" -- Same for `maplocalleader`
 
+vim.g.python3_host_prog = '/opt/homebrew/bin/python3.10'
+
 require("lazy").setup({
     'folke/which-key.nvim',
     'folke/neodev.nvim',
@@ -22,7 +24,7 @@ require("lazy").setup({
     'neovim/nvim-lspconfig',
     'glepnir/lspsaga.nvim',
     'vim-airline/vim-airline',
-    {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
     'nvim-telescope/telescope.nvim',
     'scrooloose/nerdtree',
     'nvie/vim-flake8',
@@ -32,6 +34,29 @@ require("lazy").setup({
     'rhysd/vim-grammarous',
     'psf/black',
     'fisadev/vim-isort',
+    {
+        "vhyrro/luarocks.nvim",
+        priority = 1001, -- this plugin needs to run before anything else
+        opts = {
+            rocks = { "magick" },
+        },
+    },
+    {
+        "3rd/image.nvim",
+        dependencies = { "luarocks.nvim" },
+        config = function()
+            -- ...
+        end
+    },
+    {
+    "benlubas/molten-nvim",
+    version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
+    build = ":UpdateRemotePlugins",
+    init = function()
+            -- this is an example, not a default. Please see the readme for more configuration options
+            vim.g.molten_output_win_max_height = 12
+        end,
+    },
 })
 require('settings')
 -- require('plugins')
