@@ -1,20 +1,3 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
-require("lazy").setup(plugins, opts)
-
-
-
-
 vim.cmd([[
     set softtabstop=4
     set tabstop=4
@@ -102,5 +85,3 @@ nnoremap <silent>       <LocalLeader>ro :MagmaShowOutput<CR>
 let g:magma_automatically_open_output = v:false
 let g:magma_image_provider = "none"
 ]])
-
-
