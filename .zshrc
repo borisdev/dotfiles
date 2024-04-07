@@ -1,6 +1,7 @@
 alias vim=nvim
 alias python=/opt/homebrew/bin/python3.10
 alias python3=/opt/homebrew/bin/python3.10
+### /opt/homebrew/bin/python3.10 -m pip install black --break-system-packages
 alias rm="echo use: trash"
 
 export PYTHONBREAKPOINT=ipdb.set_trace
