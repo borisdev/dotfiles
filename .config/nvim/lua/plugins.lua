@@ -13,12 +13,6 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-"
-" List of the vim plugins (requirements.txt)
-
-" firevim is a plugin that allows you to edit textareas in your browser with Neovim
-"
-
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'neomake/neomake'
 Plug 'ellisonleao/glow.nvim'
@@ -37,5 +31,6 @@ Plug 'rhysd/vim-grammarous'
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'fisadev/vim-isort'
 Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+Plug 'dccsillag/magma-nvim', { 'do': ':UpdateRemotePlugins' }
 call plug#end()
 ]])
