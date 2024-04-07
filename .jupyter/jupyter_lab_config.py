@@ -415,7 +415,7 @@ c = get_config()  # noqa
 ## The app directory to launch JupyterLab from.
 #  Default: None
 # c.LabApp.app_dir = None
-c.LabApp.app_dir = "/opt/homebrew/opt/python@3.10/Frameworks/Python.framework/Versions/3.10/share/jupyter"
+c.LabApp.app_dir = "/opt/homebrew/Cellar/python@3.10/3.10.14/Frameworks/Python.framework/Versions/3.10/share/jupyter/lab"
 
 ## The application settings directory.
 #  Default: ''
