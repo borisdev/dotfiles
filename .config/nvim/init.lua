@@ -25,6 +25,7 @@ require("lazy").setup({
     'glepnir/lspsaga.nvim',
     'vim-airline/vim-airline',
     { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+    'nvim-lua/plenary.nvim',
     'nvim-telescope/telescope.nvim',
     'scrooloose/nerdtree',
     'nvie/vim-flake8',
