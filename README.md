@@ -18,14 +18,14 @@ is outside the repo. A git bare approach allows you to have one repo contain
 all your dot files that are spread across many different directories.
 
 
-### References
+## References
 
 - [Using a bare Git repo to get version control for my dotfiles](https://stegosaurusdormant.com/bare-git-repo/).
 - [How do you use "git --bare init" repository?](https://stackoverflow.com/questions/7632454/how-do-you-use-git-bare-init-repository)
 - [Awesome dotfiles](https://github.com/webpro/awesome-dotfiles)
 
 
-## Steps to setup a development environment on my next laptop
+## Setup
 
 ```console
 cd ~/workspace
