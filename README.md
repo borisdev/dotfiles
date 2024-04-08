@@ -1,41 +1,22 @@
-# git bare approach to version your dot files
+# dotfiles
 
-This `bare` repo is based on file purpose, not file location.
+Dot files are custom tooling configurations that you use to customize your development environment.
 
-One git repo will contain dot files spread all across many directories in your file system.
+## Problem rationale
 
-Your dot files (custom tooling configs) are foundational for you to quickly
-write code that is contained across many other repo directories.
+You want to version control your dot files so that you can:
 
-## Why version control dot files?
+- quickly reproduce your development environment on your new laptop
+- quickly revert a failed experimental development environment change
 
-- you get a faster setup of a development environment on your new laptop after your old one is stolen
-- you get a faster revert of big experimental screw up to your development environment
+## Approach rationale
 
-## What's special about the git bare approach compared to other approaches?
+A git bare approach avoids the complexity of creating symlinks for each dot file.
 
-### Two competing approaches
+The "bare" word denotes that the snapshot or “working tree” of the source code
+is outside the repo. A git bare approach allows you to have one repo contain
+all your dot files that are spread across many different directories.
 
-- Approach 1: create a standard git repo with symlinks to your `$HOME` directory (most common approach) 
-- Approach 2: turn your `$HOME` directory into a git repo (easiest though riskiest approach)
-
-### The pros of this git bare approach
-
-- avoids the complexity of Approach 1's requirement of making a symlink for each dotfile in your `$HOME` to your git repo 
-- avoids the risk of Approach 2's requirement to make your `$HOME` directory into a git repo
-- somewhat intuitive: run your `git commit` and `git push` commands directly from your `$HOME` repo after you edit your dot files
-
-### The cons of this git bare approach
-
-- hard to grasp the "bare" repo concept at first
-- you must remember to create an alias, or otherwise remember long git commands
-
-### What is a git "bare" repo?
-
-In order to get one git repo directory that can point to pre-existing dotfiles that are
-spread across your `$HOME` directory we setup a "bare" git repo. 
-
-The "bare" word denotes that the snaphot or “working tree” of the source code is outside the repo.
 
 ### References
 

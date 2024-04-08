@@ -58,6 +58,17 @@ require("lazy").setup({
             vim.g.molten_output_win_max_height = 12
         end,
     },
+    {
+        "NeogitOrg/neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim",         -- required
+            "sindrets/diffview.nvim",        -- optional - Diff integration
+
+            -- Only one of these is needed, not both.
+            "nvim-telescope/telescope.nvim", -- optional
+            },
+        config = true
+    }
 })
 require('settings')
 -- require('plugins')

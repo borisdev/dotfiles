@@ -1,4 +1,7 @@
 Using NVIM_VERSION: v0.10.0-dev-2825+g98d687a4e
 
+LAUNCH WITH
+jupyter lab --app-dir /opt/homebrew/share/jupyter/lab
+
 
  /opt/homebrew/bin/python3.10 -m pip install jupyter-client --break-system-packages
