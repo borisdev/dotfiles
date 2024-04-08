@@ -64,6 +64,7 @@ require("lazy").setup({
     }
 })
 require('settings')
+require('image-minimal')
 -- require('plugins')
 require'lspconfig'.pyright.setup{}
 require('glow').setup({
