@@ -1,4 +1,4 @@
-# dotfiles
+# dot files version control
 
 Dot files are custom tooling configurations that you use to customize your development environment.
 
