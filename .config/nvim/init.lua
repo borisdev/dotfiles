@@ -10,10 +10,11 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(lazypath)
--- Example using a list of specs with the default options
-vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
-vim.g.maplocalleader = "\\" -- Same for `maplocalleader`
-
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+-- load user-installed installed Lua rocks:
+package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
+package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?.lua"
 vim.g.python3_host_prog = '/opt/homebrew/bin/python3.10'
 
 require("lazy").setup({
@@ -36,22 +37,6 @@ require("lazy").setup({
     'psf/black',
     'fisadev/vim-isort',
     {
-        "vhyrro/luarocks.nvim",
-        priority = 1001, -- this plugin needs to run before anything else
-        opts = {
-            rocks = { "magick" },
-        },
-    },
-    {
-    "benlubas/molten-nvim",
-    version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
-    build = ":UpdateRemotePlugins",
-    init = function()
-            -- this is an example, not a default. Please see the readme for more configuration options
-            vim.g.molten_output_win_max_height = 12
-        end,
-    },
-    {
         "NeogitOrg/neogit",
         dependencies = {
             "nvim-lua/plenary.nvim",         -- required
@@ -62,46 +47,74 @@ require("lazy").setup({
             },
         config = true
     },
-  {
-    "3rd/image.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-        config = function()
-          require("nvim-treesitter.configs").setup({
-            ensure_installed = { "markdown" },
-            highlight = { enable = true },
-          })
+    {
+        "vhyrro/luarocks.nvim",
+        priority = 1001, -- this plugin needs to run before anything else
+        opts = {
+            rocks = { "magick" },
+        },
+    },
+    {
+        "benlubas/molten-nvim",
+        -- version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
+        build = ":UpdateRemotePlugins",
+        init = function()
+            vim.g.molten_output_win_max_height = 12
+            vim.g.molten_use_border_highlights = true
+            vim.g.molten_image_provider = "image.nvim"
+            vim.g.molten_wrap_output = true
+            vim.g.molten_virt_text_output = true
         end,
-      },
     },
-    opts = {
-      backend = "kitty",
-      integrations = {
-        markdown = {
-          enabled = true,
-          clear_in_insert_mode = false,
-          download_remote_images = true,
-          only_render_image_at_cursor = false,
-          filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
+    {
+        "3rd/image.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            {
+                "nvim-treesitter/nvim-treesitter",
+                build = ":TSUpdate",
+                config = function()
+                    require("nvim-treesitter.configs").setup({
+                    ensure_installed = {
+                        "markdown",
+                        "markdown_inline",
+                        "python",
+                    },
+                    highlight = { 
+                        enable = true,
+                        additional_vim_regex_highlighing = false,
+                    },
+                })
+                end,
+            },
         },
-        neorg = {
-          enabled = true,
-          clear_in_insert_mode = false,
-          download_remote_images = true,
-          only_render_image_at_cursor = false,
-          filetypes = { "norg" },
+        opts = {
+            backend = "kitty",
+            integrations = {
+                markdown = {
+                    enabled = true,
+                    clear_in_insert_mode = false,
+                    download_remote_images = true,
+                    only_render_image_at_cursor = false,
+                    filetypes = { "markdown", "vimwiki" }, -- quarto here
+                },
+                neorg = {
+                    enabled = true,
+                    clear_in_insert_mode = false,
+                    download_remote_images = true,
+                    only_render_image_at_cursor = false,
+                    filetypes = { "norg" },
+                },
+            },
+            max_width = 100,
+            max_height = 12,
+            max_width_window_percentage = math.huge,
+            max_height_window_percentage = math.huge,
+            window_overlap_clear_enabled = true,
+            window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+            kitty_method = "normal",
         },
-      },
-      max_width = nil,
-      max_height = nil,
-      max_width_window_percentage = nil,
-      max_height_window_percentage = 50,
-      kitty_method = "normal",
     },
-  },
 })
 
 require('settings')
