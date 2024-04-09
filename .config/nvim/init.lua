@@ -13,8 +13,8 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 -- load user-installed installed Lua rocks:
-package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
-package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?.lua"
+-- package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
+-- package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?.lua"
 vim.g.python3_host_prog = '/opt/homebrew/bin/python3.10'
 
 require("lazy").setup({
@@ -118,7 +118,6 @@ require("lazy").setup({
 })
 
 require('settings')
--- require('plugins')
 require'lspconfig'.pyright.setup{}
 require('glow').setup({
   style = "dark",
@@ -222,8 +221,10 @@ local lsp_flags = {
 require('lspconfig')['pyright'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
-    -- default laptop host's pyright
-    cmd = { "pyright-langserver", "--stdio" },
+    -- default laptop host's pyright  -- maybe I should reinstall pyright with python3.10
+    cmd = { "pyright-langserver", "--stdio"},
+    -- CANT FIFURE OUT HOW TO SET PYTHONPATH
+    -- cmd = { "pyright-langserver", "--stdio", "--pythonpath", "/opt/homebrew/bin/python3.10" },
 }
 
  -- logs here --> vim ~/.cache/nvim/log
