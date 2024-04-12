@@ -18,8 +18,9 @@ vim.g.python3_host_prog = '/opt/homebrew/bin/python3.10'
 
 
 require("lazy").setup({
-    'neovim/nvim-lspconfig',
-    'glepnir/lspsaga.nvim',
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
     'vim-airline/vim-airline',
     { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
     'nvim-lua/plenary.nvim',
@@ -111,5 +112,14 @@ require("lazy").setup({
     }
 })
 
--- neovim global customizations
+require("mason").setup()
+require("mason-lspconfig").setup()
+-- now run `:Mason` to install language servers for different languages
+-- `:MasonInstall pyright` to install python language server
+-- `:LspInstall basedpyright` to install python language server
+
+require'lspconfig'.basedpyright.setup{}
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#basedpyright
+
+-- my customizations
 require('borisdev')
