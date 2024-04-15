@@ -1,5 +1,4 @@
 alias vim=nvim
-alias ls='ls -aGFhl'
 alias python=/opt/homebrew/bin/python3.10
 alias python3=/opt/homebrew/bin/python3.10
 alias rm="echo use: trash"
@@ -40,3 +39,7 @@ alias languagetool="java -jar $HOME/workspace/languagetool/languagetool-standalo
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 chruby ruby-3.1.3
+
+
+# this has to be below something above to work
+alias ls='ls -aGFhl'
