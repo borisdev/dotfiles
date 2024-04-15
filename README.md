@@ -1,22 +1,15 @@
-# dot files version control
+# Version control your development environment
 
-Dot files are custom tooling configurations that you use to customize your development environment.
+## Why?
 
-## Problem rationale
+- setup a new laptop
+- share your development environment with others
+- revert a failed PDE experiment
 
-You want to version control your dot files so that you can:
+## Approach
 
-- quickly reproduce your development environment on your new laptop
-- quickly revert a failed experimental development environment change
-
-## Approach rationale
-
-A git bare approach avoids the complexity of creating symlinks for each dot file.
-
-The "bare" word denotes that the snapshot or “working tree” of the source code
-is outside the repo. A git bare approach allows you to have one repo contain
-all your dot files that are spread across many different directories.
-
+- One repo consolidates all config and dot files - outside its .git directory location.
+- No symlinks 
 
 ## References
 
