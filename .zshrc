@@ -14,6 +14,7 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
 ZSH_THEME="robbyrussell"
+#ZSH_THEME="spaceship"
 
 
 plugins=(
@@ -23,6 +24,7 @@ plugins=(
     zsh_codex
 )
 source $ZSH/oh-my-zsh.sh
+# fuzzy file and dir finder with ctrl-t
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # To activate completions for zsh you need to have bashcompinit enabled in zsh:

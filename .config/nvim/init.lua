@@ -116,6 +116,17 @@ require("mason").setup()
 require("mason-lspconfig").setup()
 require("lspconfig").pyright.setup {}
 
+require'lspconfig'.pyright.setup{
+    settings = {
+        python = {
+            -- :PyrightSetPythonPath /opt/homebrew/bin/python3.10
+            pythonPath = "/opt/homebrew/bin/python3.10",
+        }
+    }
+}
+
+-- :LspLog shows the log of the language server (ie, pyright issues)
+
 -- now run `:Mason` to install language servers for different languages
 -- `:MasonInstall pyright` to install python language server
 -- `:LspInstall basedpyright` to install python language server
@@ -125,3 +136,4 @@ require("lspconfig").pyright.setup {}
 
 -- my customizations
 require('borisdev')
+
