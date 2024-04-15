@@ -1,4 +1,4 @@
--- telescope settings
+-- NO WORKS telescope settings
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
@@ -33,6 +33,7 @@ vim.cmd([[
     autocmd BufWritePost *.py call Flake8()
     let g:syntastic_python_flake8_config_file='.flake8'
     xnoremap p pgvy  " https://stackoverflow.com/questions/7163947/paste-multiple-times
+    nnoremap <Esc><Esc> :noh<CR>
 ]])
 
 vim.cmd([[ 

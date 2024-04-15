@@ -114,11 +114,13 @@ require("lazy").setup({
 
 require("mason").setup()
 require("mason-lspconfig").setup()
+require("lspconfig").pyright.setup {}
+
 -- now run `:Mason` to install language servers for different languages
 -- `:MasonInstall pyright` to install python language server
 -- `:LspInstall basedpyright` to install python language server
 
-require'lspconfig'.basedpyright.setup{}
+-- require'lspconfig'.basedpyright.setup{}
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#basedpyright
 
 -- my customizations
