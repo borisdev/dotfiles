@@ -44,4 +44,5 @@ chruby ruby-3.1.3
 
 
 # this has to be below something above to work
-alias ls='ls -aGFhl'
+# alias ls='ls -aGFhl'
+alias ls='ls -GFhl'

@@ -98,18 +98,35 @@ require("lazy").setup({
         end,
     },
     {
-        "nvim-neo-tree/neo-tree.nvim",
-        dependencies = {
-          "nvim-lua/plenary.nvim",
-          "nvim-tree/nvim-web-devicons",
-          "MunifTanjim/nui.nvim",
-          "3rd/image.nvim",
-        }
+      'stevearc/oil.nvim',
+      opts = {},
+      -- Optional dependencies
+      dependencies = { "nvim-tree/nvim-web-devicons" },
     },
     {
         'nvim-telescope/telescope.nvim', tag = '0.1.6',
         dependencies = { 'nvim-lua/plenary.nvim' }
-    }
+    },
+    {
+      "folke/which-key.nvim",
+      event = "VeryLazy",
+      init = function()
+        vim.o.timeout = true
+        vim.o.timeoutlen = 300
+      end,
+      opts = {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    },
+    {
+        'numToStr/Comment.nvim',
+        opts = {
+            -- add any options here
+        },
+        lazy = false,
+    },
 })
 
 require("mason").setup()
@@ -134,6 +151,6 @@ require'lspconfig'.pyright.setup{
 -- require'lspconfig'.basedpyright.setup{}
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#basedpyright
 
+require("oil").setup()
 -- my customizations
 require('borisdev')
-
