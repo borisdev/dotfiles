@@ -127,6 +127,9 @@ require("lazy").setup({
         },
         lazy = false,
     },
+    {
+        'akinsho/toggleterm.nvim', version = "*", config = true
+    }
 })
 
 require("mason").setup()
@@ -152,5 +155,6 @@ require'lspconfig'.pyright.setup{
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#basedpyright
 
 require("oil").setup()
+require("toggleterm").setup{}
 -- my customizations
 require('borisdev')
