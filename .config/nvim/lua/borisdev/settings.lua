@@ -1,3 +1,6 @@
+-- ToggleTerm 
+vim.keymap.set("n", "<C-t>", ":ToggleTerm direction=float<CR>")
+
 -- NO WORKS telescope settings
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
