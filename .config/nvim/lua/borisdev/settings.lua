@@ -1,5 +1,5 @@
 -- ToggleTerm 
-vim.keymap.set("n", "<C-t>", ":ToggleTerm direction=float<CR>")
+vim.keymap.set("n", "<C-t>", ":ToggleTerm direction=horizontal<CR>")
 
 -- NO WORKS telescope settings
 local builtin = require('telescope.builtin')
