@@ -1,6 +1,6 @@
 alias vim=nvim
-alias python=/opt/homebrew/bin/python3.10
-alias python3=/opt/homebrew/bin/python3.10
+alias python=/opt/homebrew/bin/python3.11
+alias python3=/opt/homebrew/bin/python3.11
 alias rm="echo use: trash"
 alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
 # /opt/homebrew/bin/python3.10 -m pip install black --break-system-packages

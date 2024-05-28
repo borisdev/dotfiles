@@ -15,9 +15,13 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 -- vim.g.maplocalleader = "\\"
 vim.g.python3_host_prog = '/opt/homebrew/bin/python3.10'
+--vim.g.python3_host_prog = '/opt/homebrew/bin/python3.11'
 
 
 require("lazy").setup({
+    {
+        'tpope/vim-fugitive'
+    },
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
@@ -139,6 +143,7 @@ require('lspconfig').pyright.setup{
         python = {
             -- :PyrightSetPythonPath /opt/homebrew/bin/python3.10
             pythonPath = "/opt/homebrew/bin/python3.10",
+            -- pythonPath = "/opt/homebrew/bin/python3.11",
         }
     }
 }
