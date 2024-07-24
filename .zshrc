@@ -8,6 +8,8 @@ alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
 export PYTHONBREAKPOINT=ipdb.set_trace
 export ZSH="$HOME/.oh-my-zsh"
 export DOCKER_SCAN_SUGGEST=false
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 DISABLE_MAGIC_FUNCTIONS="true"
 ENABLE_CORRECTION="true"
@@ -45,4 +47,5 @@ chruby ruby-3.1.3
 
 # this has to be below something above to work
 # alias ls='ls -aGFhl'
-alias ls='ls -GFhl'
+# alias ls='ls -GFhl'
+alias ls='lsd -lh'

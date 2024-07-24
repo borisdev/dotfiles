@@ -1,0 +1,6 @@
+icon:
+  when: always
+
+ sort:
+  by: suffix
+  reverse: false
