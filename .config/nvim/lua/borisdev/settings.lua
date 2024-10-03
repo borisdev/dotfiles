@@ -1,3 +1,7 @@
+-- Prettier
+vim.g["prettier#autoformat_config_present"] = 1
+vim.g["prettier#autoformat"] = 1
+
 -- ToggleTerm 
 vim.keymap.set("n", "<C-t>", ":ToggleTerm direction=horizontal<CR>")
 
@@ -28,6 +32,7 @@ vim.opt.scrolloff = 2 -- add 2 virtual lines at end
 vim.opt.hidden = true -- move amongst buffers w/o write, vimtricks.com/p/what-is-set-hidden/
 
 vim.cmd([[
+    autocmd BufWritePre *.html,*.css,*.js,*.json,*.md Prettier
     autocmd BufWritePre *.py Black
     autocmd BufWritePre *.py Isort
     autocmd FileType markdown setlocal spell

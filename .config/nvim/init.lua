@@ -158,8 +158,16 @@ require("lazy").setup({
     },
     {
         'akinsho/toggleterm.nvim', version = "*", config = true
+    },
+    {
+        'prettier/vim-prettier',
+            run = 'yarn install --frozen-lockfile --production',
+            ft = {'javascript', 'typescript', 'css', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'}
     }
 })
+
+
+
 require("mason").setup()
 require("mason-lspconfig").setup()
 require('lspconfig').pyright.setup{
@@ -171,7 +179,18 @@ require('lspconfig').pyright.setup{
         }
     }
 }
--- require('lspconfig').html.setup{}
+require'lspconfig'.html.setup{
+  cmd = {"vscode-html-language-server", "--stdio"},
+  filetypes = {"html"},
+  init_options = {
+    configurationSection = {"html", "css", "javascript"},
+    embeddedLanguages = {
+      css = true,
+      javascript = true
+    },
+    provideFormatter = true
+  }
+}
 -- require('lspconfig').htmx.setup{}
 
 -- Global mappings.
