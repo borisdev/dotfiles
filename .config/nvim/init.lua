@@ -163,7 +163,10 @@ require("lazy").setup({
         'prettier/vim-prettier',
             run = 'yarn install --frozen-lockfile --production',
             ft = {'javascript', 'typescript', 'css', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'}
-    }
+    },
+    {
+        'rcarriga/nvim-notify', version = "*", config = true
+    },
 })
 
 
@@ -243,5 +246,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 require("oil").setup()
 require("toggleterm").setup{}
+vim.notify = require("notify")
 -- my customizations
 require('borisdev')
+vim.opt.termguicolors = true

@@ -1,17 +1,10 @@
+
 -- Prettier
 vim.g["prettier#autoformat_config_present"] = 1
 vim.g["prettier#autoformat"] = 1
 
 -- ToggleTerm 
-vim.keymap.set("n", "<C-t>", ":ToggleTerm direction=horizontal<CR>")
-
--- NO WORKS telescope settings
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-
+vim.keymap.set("n", "<leader>tt", ":ToggleTerm direction=horizontal<CR>")
 
 -- clipboard binds (copy and paste from sys clipboard)
 vim.keymap.set("n", "<leader>y", '"+y')
@@ -21,6 +14,7 @@ vim.keymap.set("n", "<leader>p", '"+p')
 vim.keymap.set("n", "<leader>P", '"+P')
 vim.keymap.set("v", "<leader>p", '"+p')
 vim.keymap.set("v", "<leader>P", '"+P')
+
 
 vim.opt.mouse="a" -- mouse active in all modes
 vim.opt.background = "dark" 
