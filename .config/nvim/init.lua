@@ -1,3 +1,4 @@
+vim.o.termguicolors = true
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
@@ -167,6 +168,12 @@ require("lazy").setup({
     {
         'rcarriga/nvim-notify', version = "*", config = true
     },
+    {
+    "kevinhwang91/nvim-ufo",
+        dependencies = {
+        { "kevinhwang91/promise-async" },
+        },
+    }
 })
 
 
@@ -177,12 +184,12 @@ require('lspconfig').pyright.setup{
     settings = {
         python = {
             -- :PyrightSetPythonPath /opt/homebrew/bin/python3.10
-            pythonPath = "/opt/homebrew/bin/python3.10",
-            -- pythonPath = "/opt/homebrew/bin/python3.11",
+            -- pythonPath = "/opt/homebrew/bin/python3.10",
+            pythonPath = "/opt/homebrew/bin/python3.11",
         }
     }
 }
-require'lspconfig'.html.setup{
+require('lspconfig').html.setup{
   cmd = {"vscode-html-language-server", "--stdio"},
   filetypes = {"html"},
   init_options = {
@@ -247,6 +254,20 @@ vim.api.nvim_create_autocmd('LspAttach', {
 require("oil").setup()
 require("toggleterm").setup{}
 vim.notify = require("notify")
+
+vim.o.foldcolumn = '1' -- '0' is not bad
+vim.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+vim.api.nvim_set_keymap('n', 'zR', ':lua require("ufo").openAllFolds()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'zM', ':lua require("ufo").closeAllFolds()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'zP', ':lua require("ufo").peekFoldedLinesUnderCursor()<CR>', { noremap = true, silent = true })
+require('ufo').setup({
+    provider_selector = function(bufnr, filetype, buftype)
+        -- return {'treesitter', 'indent'}
+        return {'lsp', 'indent'}
+    end
+})
+
 -- my customizations
 require('borisdev')
-vim.opt.termguicolors = true
