@@ -25,6 +25,23 @@ vim.opt.termguicolors = true -- true colors when in terminal mode
 vim.opt.scrolloff = 2 -- add 2 virtual lines at end
 vim.opt.hidden = true -- move amongst buffers w/o write, vimtricks.com/p/what-is-set-hidden/
 
+-- Set basic vim colorscheme with customized strings
+vim.cmd([[
+  colorscheme vim
+  
+  " Make strings bright green
+  hi String guifg=#50FA7B gui=NONE
+]])
+
+-- We're now using Gruvbox theme, so we don't need this fix
+-- vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
+--   pattern = {"*.py"},
+--   callback = function()
+--     vim.cmd("syntax off")
+--     vim.cmd("syntax on")
+--   end,
+-- })
+
 vim.cmd([[
     autocmd BufWritePre *.html,*.css,*.js,*.json,*.md Prettier
     autocmd BufWritePre *.py Black
@@ -36,6 +53,7 @@ vim.cmd([[
     let g:syntastic_python_flake8_config_file='.flake8'
     xnoremap p pgvy  " https://stackoverflow.com/questions/7163947/paste-multiple-times
     nnoremap <Esc><Esc> :noh<CR>
+
 ]])
 
 vim.cmd([[ 

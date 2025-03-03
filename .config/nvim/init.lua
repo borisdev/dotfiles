@@ -31,7 +31,34 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end
 })
 
+-- default mappings for goto-preview
+--[[
+nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<CR>
+nnoremap gpt <cmd>lua require('goto-preview').goto_preview_type_definition()<CR>
+nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<CR>
+nnoremap gpD <cmd>lua require('goto-preview').goto_preview_declaration()<CR>
+nnoremap gP <cmd>lua require('goto-preview').close_all_win()<CR>
+nnoremap gpr <cmd>lua require('goto-preview').goto_preview_references()<CR>
+]]--
+
 require("lazy").setup({
+    -- Using habamax colorscheme which is built into Neovim 0.10+
+    -- {
+    --     "ellisonleao/gruvbox.nvim",
+    --     priority = 1000, -- Load before other plugins
+    --     config = function()
+    --         require("gruvbox").setup({
+    --             contrast = "hard", -- can be "hard", "soft" or empty string
+    --             italic = {
+    --                 strings = true,
+    --                 comments = true,
+    --                 operators = false,
+    --                 folds = true,
+    --             },
+    --         })
+    --         vim.cmd([[colorscheme gruvbox]])
+    --     end,
+    -- },
     {
         'tpope/vim-fugitive'
     },
@@ -39,7 +66,26 @@ require("lazy").setup({
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
     'vim-airline/vim-airline',
-    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+    { 
+        "nvim-treesitter/nvim-treesitter", 
+        build = ":TSUpdate",
+        config = function()
+            require("nvim-treesitter.configs").setup({
+                ensure_installed = {
+                    "markdown",
+                    "markdown_inline",
+                    -- Commenting out Python treesitter to preserve old highlighting
+                    -- "python",
+                },
+                highlight = { 
+                    enable = true,
+                    -- Disable treesitter highlighting for Python
+                    disable = { "python" },
+                    additional_vim_regex_highlighting = false,
+                },
+            })
+        end,
+    },
     'nvim-lua/plenary.nvim',
     'nvie/vim-flake8',
     'github/copilot.vim',
@@ -173,13 +219,45 @@ require("lazy").setup({
         dependencies = {
         { "kevinhwang91/promise-async" },
         },
+    },
+    {
+        "rmagatti/goto-preview",
+        event = "BufEnter",
+        config = function()
+            require('goto-preview').setup({
+                default_mappings = true,
+                width = 120,
+                height = 15,
+                border = {"↖", "─" ,"┐", "│", "┘", "─", "└", "│"},
+                debug = false,
+                opacity = nil,
+                resizing_mappings = false,
+                post_open_hook = nil,
+                post_close_hook = nil,
+                references = {
+                    provider = "telescope",
+                    telescope = require("telescope.themes").get_dropdown({ hide_preview = false })
+                },
+                focus_on_open = true,
+                dismiss_on_move = false,
+                force_close = true,
+                bufhidden = "wipe",
+                stack_floating_preview_windows = true,
+                same_file_float_preview = true,
+                preview_window_title = { enable = true, position = "left" },
+                zindex = 1,
+            })
+        end,
     }
 })
 
 
 
+-- Setup Mason and LSP before anything that depends on LSP
 require("mason").setup()
-require("mason-lspconfig").setup()
+require("mason-lspconfig").setup({
+  ensure_installed = { "pyright", "html" }
+})
 require('lspconfig').pyright.setup{
     settings = {
         python = {
@@ -255,9 +333,9 @@ require("oil").setup()
 require("toggleterm").setup{}
 vim.notify = require("notify")
 
+--[[
 vim.o.foldcolumn = '1' -- '0' is not bad
 vim.foldlevel = 99
-vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 vim.api.nvim_set_keymap('n', 'zR', ':lua require("ufo").openAllFolds()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', 'zM', ':lua require("ufo").closeAllFolds()<CR>', { noremap = true, silent = true })
@@ -268,6 +346,7 @@ require('ufo').setup({
         return {'lsp', 'indent'}
     end
 })
+]]
 
 -- my customizations
 require('borisdev')
