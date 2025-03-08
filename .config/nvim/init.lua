@@ -348,5 +348,8 @@ require('ufo').setup({
 })
 ]]
 
+-- Custom cursor position autocmd is defined at the top of this file
+-- No need to delete any conflicting autocmds
+
 -- my customizations
 require('borisdev')
