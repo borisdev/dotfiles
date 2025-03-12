@@ -43,12 +43,20 @@ vim.cmd([[
 -- })
 
 vim.cmd([[
-    autocmd BufWritePre *.html,*.css,*.js,*.json,*.md Prettier
-    autocmd BufWritePre *.py Black
-    autocmd BufWritePre *.py Isort
+    " Save cursor position before formatting and restore after
+    function! PreservePosition(command)
+        let l:save = winsaveview()
+        execute a:command
+        call winrestview(l:save)
+    endfunction
+
+    " Use preserved position formatters
+    autocmd BufWritePre *.html,*.css,*.js,*.json,*.md call PreservePosition('Prettier')
+    autocmd BufWritePre *.py call PreservePosition('Black')
+    autocmd BufWritePre *.py call PreservePosition('Isort')
+    autocmd BufWritePre *.py call PreservePosition('%s/\s\+$//e')
     autocmd FileType markdown setlocal spell
     autocmd FileType gitcommit setlocal spell
-    autocmd BufWritePre *.py %s/\s\+$//e " removes trailing whitespace from python files on save
     autocmd BufWritePost *.py call Flake8()
     let g:syntastic_python_flake8_config_file='.flake8'
     xnoremap p pgvy  " https://stackoverflow.com/questions/7163947/paste-multiple-times
