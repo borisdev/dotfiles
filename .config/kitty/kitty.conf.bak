@@ -1,15 +1,6 @@
 ###########################################################
 # ctrl-shift ESC gets you to kitty CLI -- the run `load-config`
 ###########################################################
-
-map ⌘+h launch --location=hsplit
-map ⌘+v launch --location=vsplit
-map ⌘+up move_window up
-map ⌘+down move_window down
-map ⌘+left move_window left
-map ⌘+right move_window right
-
-
 # cursor_text_color #111111
 # cursor_text_color #FF0000
 scrollback_lines 10000
@@ -80,3 +71,9 @@ symbol_map U+e300-U+e3eb Symbols Nerd Font
 
 # Misc Code Point Fixes
 symbol_map U+21B5,U+25B8,U+2605,U+2630,U+2632,U+2714,U+E0A3,U+E615,U+E62B Symbols Nerd Font
+
+
+# BEGIN_KITTY_THEME
+# Adapta Nokto Maia
+include current-theme.conf
+# END_KITTY_THEME
