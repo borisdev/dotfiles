@@ -65,3 +65,17 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+
+
+function parse_poetry_env {
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        echo "%{$fg[cyan]%}($(basename $VIRTUAL_ENV))%{$reset_color%} "
+    else
+        echo "%{$fg[cyan]%}%{$reset_color%} "
+    fi
+}
+
+PROMPT='$(parse_poetry_env)%~%# '
+
+# stuff like sound alerts, and list images files using the actual images
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
