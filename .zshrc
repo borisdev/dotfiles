@@ -16,7 +16,6 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
 ZSH_THEME="robbyrussell"
-#ZSH_THEME="spaceship"
 
 
 plugins=(
@@ -24,10 +23,14 @@ plugins=(
     zsh-autosuggestions
     fzf  # fuzzy file and dir finder with ctrl-t 
     zsh_codex
+    git-prompt
 )
 source $ZSH/oh-my-zsh.sh
 # fuzzy file and dir finder with ctrl-t
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source $ZSH/oh-my-zsh.sh
+
 
 # To activate completions for zsh you need to have bashcompinit enabled in zsh:
 autoload -U bashcompinit
@@ -66,16 +69,6 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 
-
-function parse_poetry_env {
-    if [[ -n "$VIRTUAL_ENV" ]]; then
-        echo "%{$fg[cyan]%}($(basename $VIRTUAL_ENV))%{$reset_color%} "
-    else
-        echo "%{$fg[cyan]%}%{$reset_color%} "
-    fi
-}
-
-PROMPT='$(parse_poetry_env)%~%# '
 
 # stuff like sound alerts, and list images files using the actual images
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
