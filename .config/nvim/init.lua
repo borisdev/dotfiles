@@ -72,6 +72,8 @@ require("lazy").setup({
         config = function()
             require("nvim-treesitter.configs").setup({
                 ensure_installed = {
+                    "typescript",
+                    "tsx",
                     "markdown",
                     "markdown_inline",
                     -- Commenting out Python treesitter to preserve old highlighting

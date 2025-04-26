@@ -1,4 +1,5 @@
-
+-- Reminder :TSInstall typescript and :TSInstall tsx 
+--
 -- Prettier
 vim.g["prettier#autoformat_config_present"] = 1
 vim.g["prettier#autoformat"] = 1
@@ -90,3 +91,12 @@ vim.cmd([[
     set history=50          
     set clipboard=unnamedplus
 ]])
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "typescript",
+    callback = function()
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt_local.expandtab = true
+    end,
+})
