@@ -72,3 +72,4 @@ unset __conda_setup
 
 # stuff like sound alerts, and list images files using the actual images
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
