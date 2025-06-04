@@ -51,7 +51,7 @@ chruby ruby-3.1.3
 # this has to be below something above to work
 # alias ls='ls -aGFhl'
 # alias ls='ls -GFhl'
-alias ls='lsd -lh'
+alias ls='lsd -alh' 
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -73,3 +73,6 @@ unset __conda_setup
 # stuff like sound alerts, and list images files using the actual images
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /opt/homebrew/bin/terraform terraform
