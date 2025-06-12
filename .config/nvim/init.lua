@@ -42,30 +42,16 @@ nnoremap gpr <cmd>lua require('goto-preview').goto_preview_references()<CR>
 ]]--
 
 require("lazy").setup({
-    -- Using habamax colorscheme which is built into Neovim 0.10+
-    -- {
-    --     "ellisonleao/gruvbox.nvim",
-    --     priority = 1000, -- Load before other plugins
-    --     config = function()
-    --         require("gruvbox").setup({
-    --             contrast = "hard", -- can be "hard", "soft" or empty string
-    --             italic = {
-    --                 strings = true,
-    --                 comments = true,
-    --                 operators = false,
-    --                 folds = true,
-    --             },
-    --         })
-    --         vim.cmd([[colorscheme gruvbox]])
-    --     end,
-    -- },
-    {
-        'tpope/vim-fugitive'
-    },
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
-    'vim-airline/vim-airline',
+    "vim-airline/vim-airline",
+    "tpope/vim-fugitive",
+    'nvie/vim-flake8',
+    'github/copilot.vim',
+    'rhysd/vim-grammarous',
+    'psf/black',
+    'fisadev/vim-isort',
     { 
         "nvim-treesitter/nvim-treesitter", 
         build = ":TSUpdate",
@@ -88,80 +74,6 @@ require("lazy").setup({
             })
         end,
     },
-    'nvim-lua/plenary.nvim',
-    'nvie/vim-flake8',
-    'github/copilot.vim',
-    'rhysd/vim-grammarous',
-    'psf/black',
-    'fisadev/vim-isort',
-    {
-        "vhyrro/luarocks.nvim",
-        priority = 1001, -- this plugin needs to run before molten-nvim
-        opts = {
-            rocks = { "magick" },
-        },
-    },
-    {
-        "3rd/image.nvim",
-        event = "VeryLazy",
-        dependencies = {
-            {
-                "nvim-treesitter/nvim-treesitter",
-                build = ":TSUpdate",
-                config = function()
-                    require("nvim-treesitter.configs").setup({
-                    ensure_installed = {
-                        "markdown",
-                        "markdown_inline",
-                        "python",
-                    },
-                    highlight = { 
-                        enable = true,
-                        additional_vim_regex_highlighing = false,
-                    },
-                })
-                end,
-            },
-        },
-        opts = {
-            backend = "kitty",
-            integrations = {
-                markdown = {
-                    enabled = true,
-                    clear_in_insert_mode = false,
-                    download_remote_images = true,
-                    only_render_image_at_cursor = false,
-                    filetypes = { "markdown", "vimwiki" }, -- quarto here
-                },
-                neorg = {
-                    enabled = true,
-                    clear_in_insert_mode = false,
-                    download_remote_images = true,
-                    only_render_image_at_cursor = false,
-                    filetypes = { "norg" },
-                },
-            },
-            max_width = 100,
-            max_height = 12,
-            max_width_window_percentage = math.huge,
-            max_height_window_percentage = math.huge,
-            window_overlap_clear_enabled = true,
-            window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
-            kitty_method = "normal",
-        },
-    },
-    {
-        "benlubas/molten-nvim",
-        -- version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
-        build = ":UpdateRemotePlugins",
-        init = function()
-            vim.g.molten_output_win_max_height = 12
-            vim.g.molten_use_border_highlights = true
-            vim.g.molten_image_provider = "image.nvim"
-            vim.g.molten_wrap_output = true
-            vim.g.molten_virt_text_output = true
-        end,
-    },
     {
       'stevearc/oil.nvim',
       opts = {
@@ -178,26 +90,6 @@ require("lazy").setup({
             end,
         }
     },
-      -- Optional dependencies
-      dependencies = { "nvim-tree/nvim-web-devicons" },
-    },
-    {
-        'nvim-telescope/telescope.nvim', tag = '0.1.6',
-        dependencies = { 'nvim-lua/plenary.nvim' }
-    },
-    {
-      "folke/which-key.nvim",
-      event = "VeryLazy",
-      init = function()
-        vim.o.timeout = true
-        vim.o.timeoutlen = 300
-      end,
-      opts = {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
-    },
     {
         'numToStr/Comment.nvim',
         opts = {
@@ -206,15 +98,9 @@ require("lazy").setup({
         lazy = false,
     },
     {
-        'akinsho/toggleterm.nvim', version = "*", config = true
-    },
-    {
         'prettier/vim-prettier',
             run = 'yarn install --frozen-lockfile --production',
             ft = {'javascript', 'typescript', 'css', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'}
-    },
-    {
-        'rcarriga/nvim-notify', version = "*", config = true
     },
     {
     "kevinhwang91/nvim-ufo",
@@ -250,6 +136,14 @@ require("lazy").setup({
                 zindex = 1,
             })
         end,
+    },
+    {
+        "ibhagwan/fzf-lua",
+        -- optional for icon support
+        -- dependencies = { "nvim-tree/nvim-web-devicons" },
+        -- or if using mini.icons/mini.nvim
+        -- dependencies = { "echasnovski/mini.icons" },
+        opts = {}
     }
 })
 

@@ -76,3 +76,6 @@ export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
+
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
