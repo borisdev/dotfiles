@@ -1,4 +1,3 @@
-vim.o.termguicolors = true
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
@@ -185,19 +184,19 @@ require("lazy").setup({
         'nvim-telescope/telescope.nvim', tag = '0.1.6',
         dependencies = { 'nvim-lua/plenary.nvim' }
     },
-    {
-      "folke/which-key.nvim",
-      event = "VeryLazy",
-      init = function()
-        vim.o.timeout = true
-        vim.o.timeoutlen = 300
-      end,
-      opts = {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
-    },
+    -- {
+    --   "folke/which-key.nvim",
+    --   event = "VeryLazy",
+    --   init = function()
+    --     vim.o.timeout = true
+    --     vim.o.timeoutlen = 300
+    --   end,
+    --   opts = {
+    --     -- your configuration comes here
+    --     -- or leave it empty to use the default settings
+    --     -- refer to the configuration section below
+    --   }
+    -- },
     {
         'numToStr/Comment.nvim',
         opts = {
@@ -361,5 +360,21 @@ require('ufo').setup({
 -- Custom cursor position autocmd is defined at the top of this file
 -- No need to delete any conflicting autocmds
 
--- my customizations
+-- Configure LSP diagnostics display
+vim.diagnostic.config({
+  virtual_text = {
+    prefix = '●',
+    source = 'if_many',
+  },
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    prefix = '',
+  },
+})
 require('borisdev')
