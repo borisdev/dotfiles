@@ -338,7 +338,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- require'lspconfig'.basedpyright.setup{}
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#basedpyright
 
-require("oil").setup()
+require("oil").setup({
+    view_options = {
+    -- Show files and directories that start with "."
+    show_hidden = true,
+},
+})
 require("toggleterm").setup{}
 vim.notify = require("notify")
 
