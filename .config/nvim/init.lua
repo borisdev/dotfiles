@@ -14,7 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 -- space bar as leader for custom keybindings
 vim.g.mapleader = " "
 -- vim.g.maplocalleader = "\\"
-vim.g.python3_host_prog = '/opt/homebrew/bin/python3.10'
+vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
 --vim.g.python3_host_prog = '/opt/homebrew/bin/python3.11'
 
 
@@ -212,9 +212,9 @@ require("lazy").setup({
             run = 'yarn install --frozen-lockfile --production',
             ft = {'javascript', 'typescript', 'css', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'}
     },
-    {
-        'rcarriga/nvim-notify', version = "*", config = true
-    },
+    -- {
+    --     'rcarriga/nvim-notify', version = "*", config = true
+    -- },
     {
     "kevinhwang91/nvim-ufo",
         dependencies = {
@@ -272,7 +272,7 @@ require('lspconfig').pyright.setup{
         python = {
             -- :PyrightSetPythonPath /opt/homebrew/bin/python3.10
             -- pythonPath = "/opt/homebrew/bin/python3.10",
-            pythonPath = "/opt/homebrew/bin/python3.11",
+            pythonPath = "/opt/homebrew/bin/python3.13",
         }
     }
 }
@@ -345,7 +345,7 @@ require("oil").setup({
 },
 })
 require("toggleterm").setup{}
-vim.notify = require("notify")
+-- vim.notify = require("notify")
 
 --[[
 vim.o.foldcolumn = '1' -- '0' is not bad

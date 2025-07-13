@@ -1,6 +1,6 @@
 alias vim=nvim
-alias python=/opt/homebrew/bin/python3.11
-alias python3=/opt/homebrew/bin/python3.11
+alias python=/opt/homebrew/bin/python3.13
+alias python3=/opt/homebrew/bin/python3.13
 alias rm="echo use: trash"
 alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
 # /opt/homebrew/bin/python3.10 -m pip install black --break-system-packages
@@ -53,19 +53,9 @@ chruby ruby-3.1.3
 # alias ls='ls -GFhl'
 alias ls='lsd -alh' 
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+# >>> conda initialize >>> (DISABLED)
+# Conda/miniforge disabled to prevent Python version conflicts
+# Use Homebrew Python and Poetry/uv for package management
 # <<< conda initialize <<<
 
 
@@ -79,3 +69,11 @@ complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
+alias pip="python3.13 -m pip"
+alias pip3="python3.13 -m pip"
+
+# Ensure Homebrew paths take priority (no conda interference)
+export PATH="/opt/homebrew/bin:$PATH"
+
+# Force use of Homebrew uv (not miniforge remnants)
+alias uv="/opt/homebrew/bin/uv"
