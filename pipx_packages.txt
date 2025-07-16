@@ -1,0 +1,8 @@
+venvs are in /Users/borisdev/.local/pipx/venvs
+apps are exposed on your $PATH at /Users/borisdev/.local/bin
+manual pages are exposed at /Users/borisdev/.local/share/man
+   package black 25.1.0, installed using Python 3.13.5
+    - black
+    - blackd
+   package poetry 2.1.3, installed using Python 3.13.5
+    - poetry
