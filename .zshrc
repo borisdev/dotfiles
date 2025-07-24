@@ -77,3 +77,5 @@ export PATH="/opt/homebrew/bin:$PATH"
 
 # Force use of Homebrew uv (not miniforge remnants)
 alias uv="/opt/homebrew/bin/uv"
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
