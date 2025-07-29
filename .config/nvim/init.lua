@@ -58,6 +58,7 @@ require("lazy").setup({
     --         vim.cmd([[colorscheme gruvbox]])
     --     end,
     -- },
+    require('plugins.cmp'),
     {
         'tpope/vim-fugitive'
     },
@@ -233,18 +234,32 @@ require("lazy").setup({
                 debug = false,
                 opacity = nil,
                 resizing_mappings = false,
-                post_open_hook = nil,
+                post_open_hook = function()
+                    -- Set consistent dark colors for preview windows
+                    vim.api.nvim_set_hl(0, 'FloatBorder', { bg = '#1e1e1e', fg = '#565656' })
+                    vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#1e1e1e', fg = '#d4d4d4' })
+                    vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = '#252526', fg = '#cccccc' })
+                    vim.api.nvim_set_hl(0, 'TelescopeBorder', { bg = '#252526', fg = '#454545' })
+                    vim.api.nvim_set_hl(0, 'TelescopeSelection', { bg = '#094771', fg = '#ffffff' })
+                    vim.api.nvim_set_hl(0, 'TelescopeSelectionCaret', { bg = '#094771', fg = '#ffffff' })
+                    vim.api.nvim_set_hl(0, 'TelescopeMatching', { fg = '#4fc1ff', bold = true })
+                    vim.api.nvim_set_hl(0, 'TelescopePromptNormal', { bg = '#313131', fg = '#cccccc' })
+                    vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { bg = '#313131', fg = '#454545' })
+                end,
                 post_close_hook = nil,
                 references = {
                     provider = "telescope",
-                    telescope = require("telescope.themes").get_dropdown({ hide_preview = false })
+                    telescope = require("telescope.themes").get_dropdown({ 
+                        hide_preview = false,
+                        layout_config = { width = 0.8, height = 0.6 }
+                    })
                 },
                 focus_on_open = true,
                 dismiss_on_move = false,
                 force_close = true,
                 bufhidden = "wipe",
-                stack_floating_preview_windows = true,
-                same_file_float_preview = true,
+                stack_floating_preview_windows = false,
+                same_file_float_preview = false,
                 preview_window_title = { enable = true, position = "left" },
                 zindex = 1,
             })
@@ -309,7 +324,20 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'gd', function()
+        local params = vim.lsp.util.make_position_params(0, 'utf-8')
+        vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, config)
+            if err then return end
+            if not result or vim.tbl_isempty(result) then return end
+            
+            -- Jump to first result directly
+            if vim.tbl_islist(result) then
+                vim.lsp.util.jump_to_location(result[1], 'utf-8')
+            else
+                vim.lsp.util.jump_to_location(result, 'utf-8')
+            end
+        end)
+    end, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
