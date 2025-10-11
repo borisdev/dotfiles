@@ -1,6 +1,6 @@
 alias vim=nvim
-alias python=/opt/homebrew/bin/python3.13
-alias python3=/opt/homebrew/bin/python3.13
+alias python=/opt/homebrew/bin/python3.12
+alias python3=/opt/homebrew/bin/python3.12
 alias rm="echo use: trash"
 alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
 # /opt/homebrew/bin/python3.10 -m pip install black --break-system-packages
@@ -69,8 +69,8 @@ complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
-alias pip="python3.13 -m pip"
-alias pip3="python3.13 -m pip"
+alias pip="python3.12 -m pip"
+alias pip3="python3.12 -m pip"
 
 # Ensure Homebrew paths take priority (no conda interference)
 export PATH="/opt/homebrew/bin:$PATH"
@@ -79,3 +79,8 @@ export PATH="/opt/homebrew/bin:$PATH"
 alias uv="/opt/homebrew/bin/uv"
 export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
+export PATH=/Library/TeX/texbin:$PATH
+export PATH=/Library/TeX/texbin:$PATH
+
+export PATH=/Library/TeX/texbin:$PATH
+export ANTHROPIC_API_KEY="$(cat ~/ANTHROPIC_API_KEY)"

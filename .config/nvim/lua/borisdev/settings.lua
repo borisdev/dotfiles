@@ -58,7 +58,7 @@ vim.cmd([[
     autocmd BufWritePre *.py call PreservePosition('%s/\s\+$//e')
     autocmd FileType markdown setlocal spell
     autocmd FileType gitcommit setlocal spell
-    autocmd BufWritePost *.py call Flake8()
+    " autocmd BufWritePost *.py call Flake8()  " Disabled to prevent duplicate diagnostics with Pyright
     let g:syntastic_python_flake8_config_file='.flake8'
     xnoremap p pgvy  " https://stackoverflow.com/questions/7163947/paste-multiple-times
     nnoremap <Esc><Esc> :noh<CR>

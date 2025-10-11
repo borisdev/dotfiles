@@ -14,7 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 -- space bar as leader for custom keybindings
 vim.g.mapleader = " "
 -- vim.g.maplocalleader = "\\"
-vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
+vim.g.python3_host_prog = '/opt/homebrew/bin/python3.12'
 --vim.g.python3_host_prog = '/opt/homebrew/bin/python3.11'
 
 
@@ -72,24 +72,23 @@ require("lazy").setup({
         config = function()
             require("nvim-treesitter.configs").setup({
                 ensure_installed = {
+                    "python",
                     "typescript",
                     "tsx",
                     "markdown",
                     "markdown_inline",
-                    -- Commenting out Python treesitter to preserve old highlighting
-                    -- "python",
                 },
                 highlight = { 
                     enable = true,
-                    -- Disable treesitter highlighting for Python
-                    disable = { "python" },
                     additional_vim_regex_highlighting = false,
                 },
+                indent = { enable = true },
+                incremental_selection = { enable = true },
             })
         end,
     },
     'nvim-lua/plenary.nvim',
-    'nvie/vim-flake8',
+    -- 'nvie/vim-flake8',  -- Removed to prevent duplicate diagnostics with Pyright
     'github/copilot.vim',
     'rhysd/vim-grammarous',
     'psf/black',
@@ -108,19 +107,6 @@ require("lazy").setup({
             {
                 "nvim-treesitter/nvim-treesitter",
                 build = ":TSUpdate",
-                config = function()
-                    require("nvim-treesitter.configs").setup({
-                    ensure_installed = {
-                        "markdown",
-                        "markdown_inline",
-                        "python",
-                    },
-                    highlight = { 
-                        enable = true,
-                        additional_vim_regex_highlighing = false,
-                    },
-                })
-                end,
             },
         },
         opts = {
@@ -279,30 +265,45 @@ require("lazy").setup({
 
 -- Setup Mason and LSP before anything that depends on LSP
 require("mason").setup()
+
 require("mason-lspconfig").setup({
-  ensure_installed = { "pyright", "html" }
+  ensure_installed = { "pyright", "html" },
+  handlers = {
+    -- default handler for all servers you don't customize:
+    function(server)
+      require("lspconfig")[server].setup({})
+    end,
+
+    -- customized Pyright (overrides default so it's not set up twice)
+    pyright = function()
+      require("lspconfig").pyright.setup({
+        settings = {
+          python = {
+            analysis = {
+              autoSearchPaths = true,
+              diagnosticMode = "openFilesOnly",
+              useLibraryCodeForTypes = true,
+            },
+            pythonPath = "/opt/homebrew/bin/python3.12",
+          },
+        },
+      })
+    end,
+
+    -- your HTML setup:
+    html = function()
+      require("lspconfig").html.setup({
+        cmd = {"vscode-html-language-server", "--stdio"},
+        filetypes = {"html"},
+        init_options = {
+          configurationSection = {"html", "css", "javascript"},
+          embeddedLanguages = { css = true, javascript = true },
+          provideFormatter = true,
+        },
+      })
+    end,
+  },
 })
-require('lspconfig').pyright.setup{
-    settings = {
-        python = {
-            -- :PyrightSetPythonPath /opt/homebrew/bin/python3.10
-            -- pythonPath = "/opt/homebrew/bin/python3.10",
-            pythonPath = "/opt/homebrew/bin/python3.13",
-        }
-    }
-}
-require('lspconfig').html.setup{
-  cmd = {"vscode-html-language-server", "--stdio"},
-  filetypes = {"html"},
-  init_options = {
-    configurationSection = {"html", "css", "javascript"},
-    embeddedLanguages = {
-      css = true,
-      javascript = true
-    },
-    provideFormatter = true
-  }
-}
 -- require('lspconfig').htmx.setup{}
 
 -- Global mappings.
@@ -397,7 +398,7 @@ require('ufo').setup({
 vim.diagnostic.config({
   virtual_text = {
     prefix = '●',
-    source = 'if_many',
+    source = 'always',  -- Always show diagnostic source to identify duplicates
   },
   signs = true,
   underline = true,
@@ -411,3 +412,10 @@ vim.diagnostic.config({
   },
 })
 require('borisdev')
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = { "*.md", "*.txt", "*disable_ai*.py"}, -- Replace with desired file extensions
+  callback = function()
+    vim.cmd("Copilot disable")
+  end,
+})

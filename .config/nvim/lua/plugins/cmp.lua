@@ -70,6 +70,16 @@ return {
             }, {
                 { name = 'buffer' },
             }),
+            formatting = {
+                format = function(entry, vim_item)
+                    vim_item.menu = ({
+                        nvim_lsp = "[LSP]",
+                        luasnip = "[Snip]",
+                        buffer = "[Buf]",
+                    })[entry.source.name]
+                    return vim_item
+                end
+            },
         })
 
     end,
