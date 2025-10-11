@@ -100,3 +100,42 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.expandtab = true
     end,
 })
+
+-- Minimal floating hint for nvim-cmp (no plugins)
+local ok, cmp = pcall(require, 'cmp')
+if ok then
+  local win -- current hint window id
+
+  local function show_hint()
+    if win and vim.api.nvim_win_is_valid(win) then return end
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { '[C-j/k: navigate]', '[Enter: confirm]' })
+    -- Set readable colors: white text on dark background
+    vim.api.nvim_buf_set_option(buf, 'filetype', 'help')
+    win = vim.api.nvim_open_win(buf, false, {
+      relative = 'editor',
+      anchor = 'NE',
+      row = 1,
+      col = vim.o.columns - 1,
+      width = 22,
+      height = 2,
+      focusable = false,
+      style = 'minimal',
+      border = 'rounded',
+      noautocmd = true,
+    })
+    -- Apply readable colors to the window
+    vim.api.nvim_win_set_option(win, 'winhighlight', 'Normal:Normal,FloatBorder:Normal')
+  end
+
+  local function hide_hint()
+    if win and vim.api.nvim_win_is_valid(win) then
+      vim.api.nvim_win_close(win, true)
+      win = nil
+    end
+  end
+
+  cmp.event:on('menu_opened', show_hint)
+  cmp.event:on('menu_closed', hide_hint)
+end
+

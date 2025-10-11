@@ -45,22 +45,34 @@ return {
                 ['<C-Space>'] = cmp.mapping.complete(),
                 ['<C-e>'] = cmp.mapping.abort(),
                 ['<CR>'] = cmp.mapping.confirm({ select = true }),
-                ['<Tab>'] = cmp.mapping(function(fallback)
+                -- Use Ctrl+j/k for completion navigation to avoid Tab conflict with Copilot
+                ['<C-j>'] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.select_next_item()
-                    elseif luasnip.expand_or_jumpable() then
-                        luasnip.expand_or_jump()
                     else
                         fallback()
                     end
                 end, { 'i', 's' }),
-                ['<S-Tab>'] = cmp.mapping(function(fallback)
+                ['<C-k>'] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.select_prev_item()
-                    elseif luasnip.jumpable(-1) then
-                        luasnip.jump(-1)
                     else
                         fallback()
+                    end
+                end, { 'i', 's' }),
+                -- Keep Tab for snippet expansion only, allowing Copilot to handle Tab otherwise
+                ['<Tab>'] = cmp.mapping(function(fallback)
+                    if luasnip.expand_or_jumpable() then
+                        luasnip.expand_or_jump()
+                    else
+                        fallback() -- Let Copilot handle Tab
+                    end
+                end, { 'i', 's' }),
+                ['<S-Tab>'] = cmp.mapping(function(fallback)
+                    if luasnip.jumpable(-1) then
+                        luasnip.jump(-1)
+                    else
+                        fallback() -- Let Copilot handle Shift+Tab
                     end
                 end, { 'i', 's' }),
             }),
