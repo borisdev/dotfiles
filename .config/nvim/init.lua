@@ -14,8 +14,10 @@ vim.opt.rtp:prepend(lazypath)
 -- space bar as leader for custom keybindings
 vim.g.mapleader = " "
 -- vim.g.maplocalleader = "\\"
-vim.g.python3_host_prog = '/opt/homebrew/bin/python3.12'
---vim.g.python3_host_prog = '/opt/homebrew/bin/python3.11'
+-- vim.g.python3_host_prog = '/opt/homebrew/bin/python3.12'
+--vim.g.python3_host_prog = '/opt/homebrew/bin/python3.12'
+
+vim.g.python3_host_prog = vim.fn.expand("~/.venvs/nvim/bin/python")
 
 
 
@@ -60,10 +62,19 @@ require("lazy").setup({
     -- },
     require('plugins.cmp'),
     {
+      "xTacobaco/cursor-agent.nvim",
+      config = function()
+        vim.keymap.set("n", "<leader>ca", ":CursorAgent<CR>", { desc = "Cursor Agent: Toggle terminal" })
+        vim.keymap.set("v", "<leader>ca", ":CursorAgentSelection<CR>", { desc = "Cursor Agent: Send selection" })
+        vim.keymap.set("n", "<leader>cA", ":CursorAgentBuffer<CR>", { desc = "Cursor Agent: Send buffer" })
+      end,
+    },
+    {
         'tpope/vim-fugitive'
     },
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
     "neovim/nvim-lspconfig",
     'vim-airline/vim-airline',
     { 
@@ -91,8 +102,79 @@ require("lazy").setup({
     -- 'nvie/vim-flake8',  -- Removed to prevent duplicate diagnostics with Pyright
     'github/copilot.vim',
     'rhysd/vim-grammarous',
-    'psf/black',
-    'fisadev/vim-isort',
+    -- 'psf/black',  -- OBSOLETE: Replaced by Ruff (via conform.nvim)
+    -- 'fisadev/vim-isort',  -- OBSOLETE: Replaced by Ruff (via conform.nvim)
+    -------------------------------------------------------
+    -- Conform: unified formatter (Ruff + Prettier)
+    -------------------------------------------------------
+    {
+      "stevearc/conform.nvim",
+      opts = {
+        formatters_by_ft = {
+          -- Python via Ruff (replaces black + isort)
+          python = { "ruff_format" },
+          -- JS / TS / Web stack via Prettierd / Prettier
+          javascript = { "prettierd", "prettier" },
+          javascriptreact = { "prettierd", "prettier" },
+          typescript = { "prettierd", "prettier" },
+          typescriptreact = { "prettierd", "prettier" },
+          vue = { "prettierd", "prettier" },
+          svelte = { "prettierd", "prettier" },
+          html = { "prettierd", "prettier" },
+          css = { "prettierd", "prettier" },
+          scss = { "prettierd", "prettier" },
+          less = { "prettierd", "prettier" },
+          json = { "prettierd", "prettier" },
+          jsonc = { "prettierd", "prettier" },
+          yaml = { "prettierd", "prettier" },
+          markdown = { "prettierd", "prettier" },
+          markdown_inline = { "prettierd", "prettier" },
+          graphql = { "prettierd", "prettier" },
+        },
+        -- Auto-format on save for configured filetypes
+        format_on_save = {
+          timeout_ms = 500,
+          lsp_fallback = true,
+        },
+        -- Configure Ruff to use project's pyproject.toml if found
+        formatters = {
+          ruff_format = {
+            -- Ruff will automatically find pyproject.toml in parent directories
+            -- but we can explicitly set it if needed
+            condition = function(ctx)
+              -- Use system ruff if available, otherwise use mason-installed one
+              return true
+            end,
+          },
+        },
+      },
+    },
+    -------------------------------------------------------
+    -- nvim-lint: Linting (Ruff for Python)
+    -------------------------------------------------------
+    {
+      "mfussenegger/nvim-lint",
+      config = function()
+        local lint = require("lint")
+        
+        lint.linters_by_ft = {
+          python = { "ruff" },
+          -- Add other linters as needed
+          -- javascript = { "eslint_d" },
+          -- typescript = { "eslint_d" },
+        }
+        
+        -- Auto-lint on save and when entering buffer
+        local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+        
+        vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+          group = lint_augroup,
+          callback = function()
+            lint.try_lint()
+          end,
+        })
+      end,
+    },
     {
         "vhyrro/luarocks.nvim",
         priority = 1001, -- this plugin needs to run before molten-nvim
@@ -194,11 +276,7 @@ require("lazy").setup({
     {
         'akinsho/toggleterm.nvim', version = "*", config = true
     },
-    {
-        'prettier/vim-prettier',
-            run = 'yarn install --frozen-lockfile --production',
-            ft = {'javascript', 'typescript', 'css', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'}
-    },
+    -- NOTE: vim-prettier removed; formatting handled by Conform
     -- {
     --     'rcarriga/nvim-notify', version = "*", config = true
     -- },
@@ -266,28 +344,23 @@ require("lazy").setup({
 -- Setup Mason and LSP before anything that depends on LSP
 require("mason").setup()
 
+-- Install tools via mason-tool-installer
+require("mason-tool-installer").setup({
+  ensure_installed = {
+    "ruff",           -- Python formatter + linter
+    "prettierd",      -- Fast Prettier daemon
+    "prettier",       -- Prettier fallback
+  },
+  auto_update = false,
+  run_on_start = true,
+})
+
 require("mason-lspconfig").setup({
-  ensure_installed = { "pyright", "html" },
+  ensure_installed = { "html" },
   handlers = {
-    -- default handler for all servers you don't customize:
+    -- default handler for servers we don't customize:
     function(server)
       require("lspconfig")[server].setup({})
-    end,
-
-    -- customized Pyright (overrides default so it's not set up twice)
-    pyright = function()
-      require("lspconfig").pyright.setup({
-        settings = {
-          python = {
-            analysis = {
-              autoSearchPaths = true,
-              diagnosticMode = "openFilesOnly",
-              useLibraryCodeForTypes = true,
-            },
-            pythonPath = "/opt/homebrew/bin/python3.12",
-          },
-        },
-      })
     end,
 
     -- your HTML setup:
@@ -351,21 +424,30 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
     vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    -- Format: use Conform (Ruff / Prettier) with LSP fallback
     vim.keymap.set('n', '<space>f', function()
-      vim.lsp.buf.format { async = true }
+      require("conform").format({ async = true, lsp_fallback = true })
     end, opts)
   end,
 })
 
 
--- :LspLog shows the log of the language server (ie, pyright issues)
-
--- now run `:Mason` to install language servers for different languages
--- `:MasonInstall pyright` to install python language server
--- `:LspInstall basedpyright` to install python language server
-
--- require'lspconfig'.basedpyright.setup{}
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#basedpyright
+-----------------------------------------------------------
+-- basedpyright (Python LSP)
+-----------------------------------------------------------
+local lspconfig = require("lspconfig")
+lspconfig.basedpyright.setup({
+  settings = {
+    basedpyright = {
+      analysis = {
+        typeCheckingMode = "standard",  -- or "basic" / "strict"
+        autoSearchPaths = true,
+        diagnosticMode = "openFilesOnly",
+        useLibraryCodeForTypes = true,
+      },
+    },
+  },
+})
 
 require("oil").setup({
     view_options = {
@@ -394,7 +476,9 @@ require('ufo').setup({
 -- Custom cursor position autocmd is defined at the top of this file
 -- No need to delete any conflicting autocmds
 
--- Configure LSP diagnostics display
+-----------------------------------------------------------
+-- Diagnostics display configuration
+-----------------------------------------------------------
 vim.diagnostic.config({
   virtual_text = {
     prefix = '●',
@@ -419,3 +503,4 @@ vim.api.nvim_create_autocmd("BufEnter", {
     vim.cmd("Copilot disable")
   end,
 })
+require("cursor-agent").setup({})

@@ -1,9 +1,16 @@
+export TERM=xterm-256color
+export EDITOR=nvim
+export VISUAL=nvim
 alias vim=nvim
-alias python=/opt/homebrew/bin/python3.12
-alias python3=/opt/homebrew/bin/python3.12
 alias rm="echo use: trash"
 alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
 # /opt/homebrew/bin/python3.10 -m pip install black --break-system-packages
+#
+# Make sure python3 points to Homebrew python@3.14
+unalias python3 2>/dev/null || true
+# alias python3="/opt/homebrew/opt/python@3.14/bin/python3"
+alias python3='/opt/homebrew/bin/python3'
+alias pip3="/opt/homebrew/bin/python3/bin/pip3"
 
 export PYTHONBREAKPOINT=ipdb.set_trace
 export ZSH="$HOME/.oh-my-zsh"
@@ -22,8 +29,8 @@ plugins=(
     zsh-syntax-highlighting
     zsh-autosuggestions
     fzf  # fuzzy file and dir finder with ctrl-t 
-    zsh_codex
     git-prompt
+    zsh-vi-mode
 )
 source $ZSH/oh-my-zsh.sh
 # fuzzy file and dir finder with ctrl-t
@@ -42,22 +49,10 @@ bashcompinit
 export PATH="$PATH:$HOME/workspace/languagetool/languagetool-standalone/target/LanguageTool-6.1-SNAPSHOT/LanguageTool-6.1-SNAPSHOT/languagetool-commandline.jar"
 alias languagetool="java -jar $HOME/workspace/languagetool/languagetool-standalone/target/LanguageTool-6.1-SNAPSHOT/LanguageTool-6.1-SNAPSHOT/languagetool-commandline.jar"
 
-# jekyll github pages -- https://jekyllrb.com/docs/installation/macos/
-source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-chruby ruby-3.1.3
-
-
 # this has to be below something above to work
 # alias ls='ls -aGFhl'
 # alias ls='ls -GFhl'
 alias ls='lsd -alh' 
-
-# >>> conda initialize >>> (DISABLED)
-# Conda/miniforge disabled to prevent Python version conflicts
-# Use Homebrew Python and Poetry/uv for package management
-# <<< conda initialize <<<
-
 
 
 # stuff like sound alerts, and list images files using the actual images
@@ -69,8 +64,6 @@ complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
-alias pip="python3.12 -m pip"
-alias pip3="python3.12 -m pip"
 
 # Ensure Homebrew paths take priority (no conda interference)
 export PATH="/opt/homebrew/bin:$PATH"
@@ -83,4 +76,7 @@ export PATH=/Library/TeX/texbin:$PATH
 export PATH=/Library/TeX/texbin:$PATH
 
 export PATH=/Library/TeX/texbin:$PATH
-export ANTHROPIC_API_KEY="$(cat ~/ANTHROPIC_API_KEY)"
+# export ANTHROPIC_API_KEY="$(cat ~/ANTHROPIC_API_KEY)"
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$(brew --prefix nvm)/nvm.sh" ] && . "$(brew --prefix nvm)/nvm.sh"
+    [ -s "$(brew --prefix nvm)/etc/bash_completion.d/nvm" ] && . "$(brew --prefix nvm)/etc/bash_completion.d/nvm"
