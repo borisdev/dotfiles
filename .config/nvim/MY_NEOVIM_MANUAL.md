@@ -4,13 +4,12 @@
 
 | Key | Mode | Action |
 |-----|------|--------|
-| **GitHub Copilot (Autocomplete)** |||
+| **Completion Menu** |||
 | `<C-Space>` | Insert | Open completion menu |
-| `<C-j>` | Insert | Navigate down through suggestions |
-| `<C-k>` | Insert | Navigate up through suggestions |
+| `<C-j>` / `<Down>` | Insert | Navigate down through suggestions |
+| `<C-k>` / `<Up>` | Insert | Navigate up through suggestions |
 | `<CR>` | Insert | Accept highlighted suggestion |
 | `<C-e>` | Insert | Cancel menu without inserting |
-| `<Space>tc` | Normal | Toggle Copilot on/off |
 | **CodeCompanion (AI Chat & Actions)** |||
 | `<Space>ac` | Normal | Open AI chat buffer (agent mode) |
 | `<Space>as` | Visual | Chat with selected text |
@@ -24,37 +23,39 @@
 
 ## Overview
 
-**Two AI systems working together:**
+**AI-powered editing with CodeCompanion:**
 
-1. **GitHub Copilot** → Inline autocomplete via `nvim-cmp`
-   - Suggestions appear as you type
-   - No ghost text, integrated into completion menu
-   - Works alongside LSP, snippets, buffer completions
+**CodeCompanion** → Zed/Cursor-style editing + chat
+- Chat for questions and explanations
+- Actions for code transformations (fix/refactor/docs/tests)
+- Workspace-aware agent mode
 
-2. **CodeCompanion** → Zed/Cursor-style editing + chat
-   - Chat for questions and explanations
-   - Actions for code transformations (fix/refactor/docs/tests)
-   - Workspace-aware agent mode
+**Completion** → Standard nvim-cmp with LSP, snippets, and buffer completions
+- Suggestions appear as you type
+- Integrated completion menu
+- Works with all language servers
 
 ---
 
-## GitHub Copilot (Autocomplete)
+## Completion Menu (nvim-cmp)
 
 ### How It Works
 
-Copilot suggestions appear in your normal completion menu (alongside LSP, snippets, buffer). No ghost text, no conflicts.
+The completion menu shows suggestions from:
+- **LSP** - Language server suggestions
+- **Snippets** - Code snippets (LuaSnip)
+- **Buffer** - Words from open buffers
+
+### Using Completion
 
 **Workflow:**
 1. Start typing → suggestions appear automatically
-2. Navigate: `<C-j>` (down) / `<C-k>` (up)
+2. Navigate: `<C-j>` / `<Down>` (down) or `<C-k>` / `<Up>` (up)
 3. Accept: `<CR>` or cancel: `<C-e>`
-4. Toggle: `<Space>tc` to turn on/off
 
 **Reverting:**
 - `u` - Standard Vim undo
 - `<C-e>` - Cancel menu before accepting
-
-**Disabled in:** markdown files (enabled in git commits)
 
 ---
 
@@ -118,34 +119,30 @@ schema = {
 
 ## Troubleshooting
 
-**Copilot not showing suggestions:**
-- Check: `:Copilot status`
-- Enable: `:Copilot enable` or `<Space>tc`
-- Restart Neovim if needed
-
 **CodeCompanion not working:**
 - Verify API key in `~/workspace/sindri-mono/.env`
 - Check format: `OPENAI_API_KEY=sk-...`
 - Restart Neovim after adding key
 
 **Completion menu issues:**
-- Copilot is integrated into cmp, no conflicts expected
-- Check: `:checkhealth copilot` and `:checkhealth cmp`
+- Check: `:checkhealth cmp`
+- Ensure LSP servers are installed via Mason
+- Check: `:LspInfo` to see active language servers
 
 ---
 
 ## Mental Model
 
-**Two complementary AI systems:**
+**AI-powered editing workflow:**
 
-1. **Inline/Autocomplete** → Copilot + cmp
+1. **Completion** → Standard LSP + snippets + buffer
    - Quick suggestions as you type
-   - No special UI, just works
+   - Integrated completion menu
 
 2. **Editing/Refactor/Explain** → CodeCompanion
    - Deeper edits and conversations
    - Zed/Cursor-style workflow
 
 **When to use what:**
-- **Copilot** → Quick inline suggestions while coding
+- **Completion** → Quick inline suggestions while coding
 - **CodeCompanion** → Questions, explanations, code transformations

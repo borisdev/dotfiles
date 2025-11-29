@@ -14,8 +14,10 @@ vim.opt.rtp:prepend(lazypath)
 -- space bar as leader for custom keybindings
 vim.g.mapleader = " "
 -- vim.g.maplocalleader = "\\"
-vim.g.python3_host_prog = '/opt/homebrew/bin/python3.12'
---vim.g.python3_host_prog = '/opt/homebrew/bin/python3.11'
+-- vim.g.python3_host_prog = '/opt/homebrew/bin/python3.12'
+--vim.g.python3_host_prog = '/opt/homebrew/bin/python3.12'
+
+vim.g.python3_host_prog = vim.fn.expand("~/.venvs/nvim/bin/python")
 
 
 
@@ -58,12 +60,131 @@ require("lazy").setup({
     --         vim.cmd([[colorscheme gruvbox]])
     --     end,
     -- },
-    require('plugins.cmp'),
+    {
+        'hrsh7th/nvim-cmp',
+        dependencies = {
+            {'L3MON4D3/LuaSnip'},
+            {'hrsh7th/cmp-buffer'},
+            {'hrsh7th/cmp-nvim-lsp'},
+            {'saadparwaiz1/cmp_luasnip'},
+        },
+        config = function()
+            local cmp = require('cmp')
+            local luasnip = require('luasnip')
+
+            -- Set up gentle, eye-friendly colors for completion menu
+            vim.api.nvim_set_hl(0, 'CmpNormal', { bg = '#2d2d2d', fg = '#d4d4d4' })
+            vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { fg = '#569cd6', bold = true })
+            vim.api.nvim_set_hl(0, 'CmpItemAbbrMatchFuzzy', { fg = '#569cd6' })
+            vim.api.nvim_set_hl(0, 'CmpItemKindFunction', { fg = '#dcdcaa' })
+            vim.api.nvim_set_hl(0, 'CmpItemKindMethod', { fg = '#dcdcaa' })
+            vim.api.nvim_set_hl(0, 'CmpItemKindVariable', { fg = '#9cdcfe' })
+            vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { fg = '#569cd6' })
+            vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { fg = '#9cdcfe' })
+            vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { fg = '#b5cea8' })
+            vim.api.nvim_set_hl(0, 'CmpItemMenu', { fg = '#808080', italic = true })
+            vim.api.nvim_set_hl(0, 'CmpSel', { bg = '#404040', fg = '#ffffff' })
+
+            cmp.setup({
+                window = {
+                    completion = {
+                        winhighlight = "Normal:CmpNormal,CursorLine:CmpSel,Search:None",
+                        border = 'rounded',
+                    },
+                    documentation = {
+                        border = 'rounded',
+                        winhighlight = "Normal:CmpNormal",
+                    },
+                },
+                snippet = {
+                    expand = function(args)
+                        luasnip.lsp_expand(args.body)
+                    end,
+                },
+                mapping = cmp.mapping.preset.insert({
+                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                    ['<C-Space>'] = cmp.mapping.complete(),
+                    ['<C-e>'] = cmp.mapping.abort(),
+                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                    -- Use Ctrl+j/k OR arrows for completion navigation
+                    ['<C-j>'] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_next_item()
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
+                    ['<C-k>'] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
+                    ['<Down>'] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_next_item()
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
+                    ['<Up>'] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
+                    -- Tab only for snippets
+                    ['<Tab>'] = cmp.mapping(function(fallback)
+                        if luasnip.expand_or_jumpable() then
+                            luasnip.expand_or_jump()
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
+                    ['<S-Tab>'] = cmp.mapping(function(fallback)
+                        if luasnip.jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
+                }),
+                sources = cmp.config.sources({
+                    { name = 'nvim_lsp' },
+                    { name = 'luasnip' },
+                }, {
+                    { name = 'buffer' },
+                }),
+                formatting = {
+                    format = function(entry, vim_item)
+                        vim_item.menu = ({
+                            nvim_lsp = "[LSP]",
+                            luasnip = "[Snip]",
+                            buffer = "[Buf]",
+                        })[entry.source.name]
+                        return vim_item
+                    end
+                },
+            })
+        end,
+    },
+    {
+      "xTacobaco/cursor-agent.nvim",
+      config = function()
+        vim.keymap.set("n", "<leader>ca", ":CursorAgent<CR>", { desc = "Cursor Agent: Toggle terminal" })
+        vim.keymap.set("v", "<leader>ca", ":CursorAgentSelection<CR>", { desc = "Cursor Agent: Send selection" })
+        vim.keymap.set("n", "<leader>cA", ":CursorAgentBuffer<CR>", { desc = "Cursor Agent: Send buffer" })
+      end,
+    },
     {
         'tpope/vim-fugitive'
     },
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
     "neovim/nvim-lspconfig",
     'vim-airline/vim-airline',
     { 
@@ -90,6 +211,79 @@ require("lazy").setup({
     'nvim-lua/plenary.nvim',
     -- 'nvie/vim-flake8',  -- Removed to prevent duplicate diagnostics with Pyright
     'rhysd/vim-grammarous',
+    -- 'psf/black',  -- OBSOLETE: Replaced by Ruff (via conform.nvim)
+    -- 'fisadev/vim-isort',  -- OBSOLETE: Replaced by Ruff (via conform.nvim)
+    -------------------------------------------------------
+    -- Conform: unified formatter (Ruff + Prettier)
+    -------------------------------------------------------
+    {
+      "stevearc/conform.nvim",
+      opts = {
+        formatters_by_ft = {
+          -- Python via Ruff (replaces black + isort)
+          python = { "ruff_format" },
+          -- JS / TS / Web stack via Prettierd / Prettier
+          javascript = { "prettierd", "prettier" },
+          javascriptreact = { "prettierd", "prettier" },
+          typescript = { "prettierd", "prettier" },
+          typescriptreact = { "prettierd", "prettier" },
+          vue = { "prettierd", "prettier" },
+          svelte = { "prettierd", "prettier" },
+          html = { "prettierd", "prettier" },
+          css = { "prettierd", "prettier" },
+          scss = { "prettierd", "prettier" },
+          less = { "prettierd", "prettier" },
+          json = { "prettierd", "prettier" },
+          jsonc = { "prettierd", "prettier" },
+          yaml = { "prettierd", "prettier" },
+          markdown = { "prettierd", "prettier" },
+          markdown_inline = { "prettierd", "prettier" },
+          graphql = { "prettierd", "prettier" },
+        },
+        -- Auto-format on save for configured filetypes
+        format_on_save = {
+          timeout_ms = 500,
+          lsp_fallback = true,
+        },
+        -- Configure Ruff to use project's pyproject.toml if found
+        formatters = {
+          ruff_format = {
+            -- Ruff will automatically find pyproject.toml in parent directories
+            -- but we can explicitly set it if needed
+            condition = function(ctx)
+              -- Use system ruff if available, otherwise use mason-installed one
+              return true
+            end,
+          },
+        },
+      },
+    },
+    -------------------------------------------------------
+    -- nvim-lint: Linting (Ruff for Python)
+    -------------------------------------------------------
+    {
+      "mfussenegger/nvim-lint",
+      config = function()
+        local lint = require("lint")
+        
+        lint.linters_by_ft = {
+          python = { "ruff" },
+          -- Add other linters as needed
+          -- javascript = { "eslint_d" },
+          -- typescript = { "eslint_d" },
+        }
+        
+        -- Auto-lint on save and when entering buffer
+        local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+        
+        vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+          group = lint_augroup,
+          callback = function()
+            lint.try_lint()
+          end,
+        })
+      end,
+    },
     {
         "vhyrro/luarocks.nvim",
         priority = 1001, -- this plugin needs to run before molten-nvim
@@ -191,11 +385,7 @@ require("lazy").setup({
     {
         'akinsho/toggleterm.nvim', version = "*", config = true
     },
-    {
-        'prettier/vim-prettier',
-            run = 'yarn install --frozen-lockfile --production',
-            ft = {'javascript', 'typescript', 'css', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'}
-    },
+    -- NOTE: vim-prettier removed; formatting handled by Conform
     -- {
     --     'rcarriga/nvim-notify', version = "*", config = true
     -- },
@@ -255,7 +445,77 @@ require("lazy").setup({
       -- or if using mini.icons/mini.nvim
       -- dependencies = { "echasnovski/mini.icons" },
       opts = {}
-    }
+    },
+    -- CodeCompanion: Zed/Cursor-style editing + chat
+    {
+      "olimorris/codecompanion.nvim",
+      version = "v17.33.0",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-treesitter/nvim-treesitter",
+      },
+      opts = {
+        -- Use OpenAI as a simple default; relies on OPENAI_API_KEY
+        adapters = {
+          http = {
+            openai = function()
+              return require("codecompanion.adapters").extend("openai_compatible", {
+                env = {
+                  api_key = vim.env.OPENAI_API_KEY,
+                  url = "https://api.openai.com/v1",
+                },
+                schema = {
+                  model = { default = "gpt-4o" },
+                },
+              })
+            end,
+          },
+        },
+        strategies = {
+          chat   = { adapter = "openai" },
+          inline = { adapter = "openai" },
+          cmd    = { adapter = "openai" },
+        },
+      },
+      config = function(_, opts)
+        -- Load API key from .env file if not already set
+        if not vim.env.OPENAI_API_KEY then
+          local env_file = vim.fn.expand("~/workspace/sindri-mono/.env")
+          local file = io.open(env_file, "r")
+          if file then
+            for line in file:lines() do
+              -- Match OPENAI_API_KEY=value (handles quoted and unquoted values)
+              local value = line:match("^OPENAI_API_KEY=(.+)$")
+              if value then
+                -- Remove quotes if present
+                value = value:gsub("^['\"]", ""):gsub("['\"]$", "")
+                vim.env.OPENAI_API_KEY = value
+                break
+              end
+            end
+            file:close()
+          end
+        end
+
+        require("codecompanion").setup(opts)
+        local map = vim.keymap.set
+
+        -- Chat buffer: "agent mode" / conversation with workspace
+        map("n", "<leader>ac", "<cmd>CodeCompanionChat Toggle<CR>", {
+          desc = "AI Chat (CodeCompanion)",
+        })
+
+        -- Visual: send selected text into chat (Zed-style "edit this")
+        map("v", "<leader>as", "<cmd>CodeCompanionChat Toggle<CR>", {
+          desc = "AI Chat on selection",
+        })
+
+        -- Action palette: Zed/Cursor-style commands (/fix, /refactor, etc)
+        map({ "n", "v" }, "<leader>aa", "<cmd>CodeCompanionActions<CR>", {
+          desc = "AI Actions (Zed-style)",
+        })
+      end,
+    },
 })
 
 
@@ -263,28 +523,23 @@ require("lazy").setup({
 -- Setup Mason and LSP before anything that depends on LSP
 require("mason").setup()
 
+-- Install tools via mason-tool-installer
+require("mason-tool-installer").setup({
+  ensure_installed = {
+    "ruff",           -- Python formatter + linter
+    "prettierd",      -- Fast Prettier daemon
+    "prettier",       -- Prettier fallback
+  },
+  auto_update = false,
+  run_on_start = true,
+})
+
 require("mason-lspconfig").setup({
-  ensure_installed = { "pyright", "html" },
+  ensure_installed = { "html" },
   handlers = {
-    -- default handler for all servers you don't customize:
+    -- default handler for servers we don't customize:
     function(server)
       require("lspconfig")[server].setup({})
-    end,
-
-    -- customized Pyright (overrides default so it's not set up twice)
-    pyright = function()
-      require("lspconfig").pyright.setup({
-        settings = {
-          python = {
-            analysis = {
-              autoSearchPaths = true,
-              diagnosticMode = "openFilesOnly",
-              useLibraryCodeForTypes = true,
-            },
-            pythonPath = "/opt/homebrew/bin/python3.12",
-          },
-        },
-      })
     end,
 
     -- your HTML setup:
@@ -348,21 +603,30 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
     vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    -- Format: use Conform (Ruff / Prettier) with LSP fallback
     vim.keymap.set('n', '<space>f', function()
-      vim.lsp.buf.format { async = true }
+      require("conform").format({ async = true, lsp_fallback = true })
     end, opts)
   end,
 })
 
 
--- :LspLog shows the log of the language server (ie, pyright issues)
-
--- now run `:Mason` to install language servers for different languages
--- `:MasonInstall pyright` to install python language server
--- `:LspInstall basedpyright` to install python language server
-
--- require'lspconfig'.basedpyright.setup{}
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#basedpyright
+-----------------------------------------------------------
+-- basedpyright (Python LSP)
+-----------------------------------------------------------
+local lspconfig = require("lspconfig")
+lspconfig.basedpyright.setup({
+  settings = {
+    basedpyright = {
+      analysis = {
+        typeCheckingMode = "standard",  -- or "basic" / "strict"
+        autoSearchPaths = true,
+        diagnosticMode = "openFilesOnly",
+        useLibraryCodeForTypes = true,
+      },
+    },
+  },
+})
 
 require("oil").setup({
     view_options = {
@@ -391,7 +655,9 @@ require('ufo').setup({
 -- Custom cursor position autocmd is defined at the top of this file
 -- No need to delete any conflicting autocmds
 
--- Configure LSP diagnostics display
+-----------------------------------------------------------
+-- Diagnostics display configuration
+-----------------------------------------------------------
 vim.diagnostic.config({
   virtual_text = {
     prefix = '●',
@@ -410,9 +676,4 @@ vim.diagnostic.config({
 })
 require('borisdev')
 
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*.md", "*.txt", "*disable_ai*.py"}, -- Replace with desired file extensions
-  callback = function()
-    vim.cmd("Copilot disable")
-  end,
-})
+require("cursor-agent").setup({})
