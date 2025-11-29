@@ -1,3 +1,7 @@
+-- Suppress lspconfig deprecation warnings (must be set before any lspconfig require() calls)
+vim.g.lspconfig_silence_deprecation_warnings = true
+vim.g.lspconfig_silence_warnings = true
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
@@ -462,7 +466,8 @@ require("lazy").setup({
               return require("codecompanion.adapters").extend("openai_compatible", {
                 env = {
                   api_key = vim.env.OPENAI_API_KEY,
-                  url = "https://api.openai.com/v1",
+                  url = "https://api.openai.com",
+                  -- chat_url = "/v1/chat/completions", -- optional; default is this anyway
                 },
                 schema = {
                   model = { default = "gpt-4o" },
@@ -473,7 +478,25 @@ require("lazy").setup({
         },
         strategies = {
           chat   = { adapter = "openai" },
-          inline = { adapter = "openai" },
+          inline = {
+            adapter = "openai",
+            keymaps = {
+              -- SAFE: explicit, leader-based keys
+              accept_change = {
+                modes = { n = "<leader>da" },      -- DiffAccept
+                description = "Accept inline diff",
+              },
+              reject_change = {
+                modes = { n = "<leader>dr" },      -- DiffReject
+                description = "Reject inline diff",
+              },
+              -- SAFETY: disable "YOLO accept everything"
+              always_accept = {
+                modes = {},                        -- no keybound (so no accidental gdy)
+                description = "Always accept (disabled in safe mode)",
+              },
+            },
+          },
           cmd    = { adapter = "openai" },
         },
       },
