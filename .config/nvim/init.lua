@@ -89,10 +89,7 @@ require("lazy").setup({
     },
     'nvim-lua/plenary.nvim',
     -- 'nvie/vim-flake8',  -- Removed to prevent duplicate diagnostics with Pyright
-    'github/copilot.vim',
     'rhysd/vim-grammarous',
-    'psf/black',
-    'fisadev/vim-isort',
     {
         "vhyrro/luarocks.nvim",
         priority = 1001, -- this plugin needs to run before molten-nvim
