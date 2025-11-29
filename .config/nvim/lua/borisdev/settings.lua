@@ -1,8 +1,7 @@
 -- Reminder :TSInstall typescript and :TSInstall tsx 
 --
--- Prettier
-vim.g["prettier#autoformat_config_present"] = 1
-vim.g["prettier#autoformat"] = 1
+-- NOTE: Formatting is now handled by Conform.nvim (Ruff for Python, Prettierd for web files)
+-- Old vim-prettier settings removed
 
 -- ToggleTerm 
 vim.keymap.set("n", "<leader>tt", ":ToggleTerm direction=horizontal<CR>")
@@ -44,17 +43,17 @@ vim.cmd([[
 -- })
 
 vim.cmd([[
-    " Save cursor position before formatting and restore after
+    " NOTE: Formatting is now handled by Conform.nvim (configured in init.lua)
+    " Old PreservePosition autocommands removed - they called non-existent commands
+    
+    " Helper function for preserving cursor position (used for trailing whitespace removal)
     function! PreservePosition(command)
         let l:save = winsaveview()
         execute a:command
         call winrestview(l:save)
     endfunction
-
-    " Use preserved position formatters
-    autocmd BufWritePre *.html,*.css,*.js,*.json,*.md call PreservePosition('Prettier')
-    autocmd BufWritePre *.py call PreservePosition('Black')
-    autocmd BufWritePre *.py call PreservePosition('Isort')
+    
+    " Remove trailing whitespace on save for Python files
     autocmd BufWritePre *.py call PreservePosition('%s/\s\+$//e')
     autocmd FileType markdown setlocal spell
     autocmd FileType gitcommit setlocal spell

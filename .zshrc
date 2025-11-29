@@ -29,8 +29,6 @@ plugins=(
     zsh-syntax-highlighting
     zsh-autosuggestions
     fzf  # fuzzy file and dir finder with ctrl-t 
-    git-prompt
-    zsh-vi-mode
 )
 source $ZSH/oh-my-zsh.sh
 # fuzzy file and dir finder with ctrl-t
