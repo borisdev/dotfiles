@@ -219,6 +219,15 @@ require("lazy").setup({
             ["*"] = true,
           },
         })
+        -- Toggle Copilot mapping
+        vim.keymap.set("n", "<leader>tc", function()
+          local client = require("copilot.client")
+          if client.is_disabled() then
+            vim.cmd("Copilot enable")
+          else
+            vim.cmd("Copilot disable")
+          end
+        end, { desc = "Toggle Copilot" })
       end,
     },
     'rhysd/vim-grammarous',
@@ -476,7 +485,7 @@ require("lazy").setup({
                   url = "https://api.openai.com/v1",
                 },
                 schema = {
-                  model = { default = "gpt-4o-mini" },
+                  model = { default = "gpt-4o" },
                 },
               })
             end,
