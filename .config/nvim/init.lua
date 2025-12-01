@@ -1,4 +1,5 @@
 -- Suppress lspconfig deprecation warnings (must be set before any lspconfig require() calls)
+-- Set as early as possible, before lazy.nvim loads
 vim.g.lspconfig_silence_deprecation_warnings = true
 vim.g.lspconfig_silence_warnings = true
 
@@ -189,7 +190,19 @@ require("lazy").setup({
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
-    "neovim/nvim-lspconfig",
+    {
+      "neovim/nvim-lspconfig",
+      init = function()
+        -- Suppress deprecation warnings BEFORE plugin loads
+        vim.g.lspconfig_silence_deprecation_warnings = true
+        vim.g.lspconfig_silence_warnings = true
+      end,
+      config = function()
+        -- Also set here as backup
+        vim.g.lspconfig_silence_deprecation_warnings = true
+        vim.g.lspconfig_silence_warnings = true
+      end,
+    },
     'vim-airline/vim-airline',
     { 
         "nvim-treesitter/nvim-treesitter", 
@@ -215,8 +228,6 @@ require("lazy").setup({
     'nvim-lua/plenary.nvim',
     -- 'nvie/vim-flake8',  -- Removed to prevent duplicate diagnostics with Pyright
     'rhysd/vim-grammarous',
-    -- 'psf/black',  -- OBSOLETE: Replaced by Ruff (via conform.nvim)
-    -- 'fisadev/vim-isort',  -- OBSOLETE: Replaced by Ruff (via conform.nvim)
     -------------------------------------------------------
     -- Conform: unified formatter (Ruff + Prettier)
     -------------------------------------------------------
@@ -224,7 +235,7 @@ require("lazy").setup({
       "stevearc/conform.nvim",
       opts = {
         formatters_by_ft = {
-          -- Python via Ruff (replaces black + isort)
+          -- Python via Ruff
           python = { "ruff_format" },
           -- JS / TS / Web stack via Prettierd / Prettier
           javascript = { "prettierd", "prettier" },
@@ -246,8 +257,10 @@ require("lazy").setup({
         },
         -- Auto-format on save for configured filetypes
         format_on_save = {
-          timeout_ms = 500,
+          enabled = true,
+          timeout_ms = 2000,
           lsp_fallback = true,
+          async = false,
         },
         -- Configure Ruff to use project's pyproject.toml if found
         formatters = {
@@ -258,9 +271,31 @@ require("lazy").setup({
               -- Use system ruff if available, otherwise use mason-installed one
               return true
             end,
+            -- Suppress errors for invalid syntax (Ruff can't format broken code)
+            -- The errors will still show in the log but won't block formatting
+            quiet = false,
           },
         },
+        -- Don't fail format_on_save if formatter errors occur
+        notify_on_error = false,
       },
+      config = function(_, opts)
+        require("conform").setup(opts)
+        -- Manual autocmd to ensure format_on_save works
+        local formatters_by_ft = opts.formatters_by_ft
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          pattern = "*",
+          group = vim.api.nvim_create_augroup("conform_auto_format", { clear = true }),
+          callback = function(args)
+            -- Only format if there's a formatter configured for this filetype
+            local ft = vim.bo[args.buf].filetype
+            if ft and formatters_by_ft[ft] then
+              local conform = require("conform")
+              conform.format({ bufnr = args.buf, async = false, timeout_ms = 2000 })
+            end
+          end,
+        })
+      end,
     },
     -------------------------------------------------------
     -- nvim-lint: Linting (Ruff for Python)
@@ -483,16 +518,16 @@ require("lazy").setup({
             keymaps = {
               -- SAFE: explicit, leader-based keys
               accept_change = {
-                modes = { n = "<leader>da" },      -- DiffAccept
+                modes = { n = "<leader>a" },      -- Accept
                 description = "Accept inline diff",
               },
               reject_change = {
-                modes = { n = "<leader>dr" },      -- DiffReject
+                modes = { n = "<leader>r" },      -- Reject
                 description = "Reject inline diff",
               },
-              -- SAFETY: disable "YOLO accept everything"
+              -- SAFETY: disable "YOLO accept everything" (gdy)
               always_accept = {
-                modes = {},                        -- no keybound (so no accidental gdy)
+                modes = {},                        -- no keybound (gdy disabled for safety)
                 description = "Always accept (disabled in safe mode)",
               },
             },
@@ -537,6 +572,9 @@ require("lazy").setup({
         map({ "n", "v" }, "<leader>aa", "<cmd>CodeCompanionActions<CR>", {
           desc = "AI Actions (Zed-style)",
         })
+
+        -- Explicitly disable gdy (always accept) for safety
+        vim.keymap.set("n", "gdy", "<Nop>", { buffer = true, desc = "Disabled: always accept (safety)" })
       end,
     },
 })
@@ -557,17 +595,27 @@ require("mason-tool-installer").setup({
   run_on_start = true,
 })
 
+-- Shared LSP setup
+local lspconfig = require("lspconfig")
+local util = require("lspconfig.util")
+
+-- Shared capabilities so all LSPs use the same position encoding
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.positionEncodings = { "utf-16" }
+
 require("mason-lspconfig").setup({
-  ensure_installed = { "html" },
+  ensure_installed = { "html" },  -- no need to list basedpyright here
   handlers = {
-    -- default handler for servers we don't customize:
+    -- Default handler for servers we *do* want Mason to manage
     function(server)
-      require("lspconfig")[server].setup({})
+      lspconfig[server].setup({
+        capabilities = capabilities,
+      })
     end,
 
-    -- your HTML setup:
+    -- Custom HTML config (kept as you had it)
     html = function()
-      require("lspconfig").html.setup({
+      lspconfig.html.setup({
         cmd = {"vscode-html-language-server", "--stdio"},
         filetypes = {"html"},
         init_options = {
@@ -575,8 +623,12 @@ require("mason-lspconfig").setup({
           embeddedLanguages = { css = true, javascript = true },
           provideFormatter = true,
         },
+        capabilities = capabilities,
       })
     end,
+
+    -- ❌ Disable Pyright (Mason sees it installed, so we override with a no-op)
+    pyright = function() end,
   },
 })
 -- require('lspconfig').htmx.setup{}
@@ -628,27 +680,91 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     -- Format: use Conform (Ruff / Prettier) with LSP fallback
     vim.keymap.set('n', '<space>f', function()
-      require("conform").format({ async = true, lsp_fallback = true })
+      require("conform").format({ bufnr = 0, async = false, timeout_ms = 2000, lsp_fallback = true })
     end, opts)
   end,
 })
 
 
 -----------------------------------------------------------
--- basedpyright (Python LSP)
+-- Explicitly disable Pyright BEFORE setting up basedpyright
 -----------------------------------------------------------
-local lspconfig = require("lspconfig")
+-- Stop and disable pyright completely - we use basedpyright instead
+lspconfig.pyright.setup({
+  autostart = false,
+})
+
+-- Kill any existing pyright clients that might be running
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("KillPyright", { clear = true }),
+  callback = function(ev)
+    local clients = vim.lsp.get_clients({ bufnr = ev.buf })
+    for _, client in ipairs(clients) do
+      if client.name == "pyright" then
+        vim.notify("Stopping pyright client (using basedpyright instead)", vim.log.levels.INFO)
+        vim.lsp.stop_client(client.id, true)
+      end
+    end
+  end,
+})
+
+-----------------------------------------------------------
+-- basedpyright (Python LSP from /opt/homebrew/bin)
+-----------------------------------------------------------
+
+-- Helper to find package root with pyproject.toml containing [tool.pyright]
+local function find_pyright_package_root(fname)
+  local current = vim.fn.fnamemodify(fname, ":p:h")
+  
+  -- Walk up directory tree looking for pyproject.toml with [tool.pyright]
+  while current ~= "/" do
+    local pyproject = current .. "/pyproject.toml"
+    if vim.fn.filereadable(pyproject) == 1 then
+      -- Check if this pyproject.toml has [tool.pyright] section
+      local file = io.open(pyproject, "r")
+      if file then
+        local content = file:read("*all")
+        file:close()
+        if content:match("%[tool%.pyright%]") then
+          -- Found package root with pyright config
+          return current
+        end
+      end
+    end
+    current = vim.fn.fnamemodify(current, ":h")
+  end
+  
+  -- Fallback to standard detection
+  return util.root_pattern("pyproject.toml", "pyrightconfig.json", ".git")(fname)
+end
+
+-- You know you have `/opt/homebrew/bin/basedpyright`, so we can be explicit:
 lspconfig.basedpyright.setup({
+  cmd = { "/opt/homebrew/bin/basedpyright", "--stdio" },
+
+  root_dir = find_pyright_package_root,
+  capabilities = capabilities,
+
   settings = {
     basedpyright = {
       analysis = {
-        typeCheckingMode = "standard",  -- or "basic" / "strict"
+        typeCheckingMode = "standard",
         autoSearchPaths = true,
         diagnosticMode = "openFilesOnly",
         useLibraryCodeForTypes = true,
       },
     },
+    -- Ensure basedpyright reads pyproject.toml settings
+    python = {
+      analysis = {
+        autoImportCompletions = true,
+        typeCheckingMode = "standard",
+      },
+    },
   },
+  
+  -- Let basedpyright read pyproject.toml and pyrightconfig.json automatically
+  -- It should pick up venvPath and venv from [tool.pyright] sections
 })
 
 require("oil").setup({

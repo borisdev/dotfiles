@@ -14,8 +14,8 @@
 | `<Space>ac` | Normal | Open AI chat buffer (agent mode) |
 | `<Space>as` | Visual | Chat with selected text |
 | `<Space>aa` | Normal/Visual | AI actions palette (fix/refactor/docs/tests) |
-| `<Space>da` | Normal | Accept inline diff (safe mode) |
-| `<Space>dr` | Normal | Reject inline diff (safe mode) |
+| `<Space>a` | Normal | Accept inline diff (safe mode) |
+| `<Space>r` | Normal | Reject inline diff (safe mode) |
 | **Cursor Agent (Bonus)** |||
 | `<Space>ca` | Normal | Toggle Cursor Agent terminal |
 | `<Space>ca` | Visual | Send selection to Cursor Agent |
@@ -97,16 +97,17 @@ The completion menu shows suggestions from:
 
 When CodeCompanion shows inline diffs (after actions or edits):
 
-**`<Space>da`** - Accept the inline diff
+**`<Space>a`** - Accept the inline diff
 - Explicit, leader-based keybinding
 - Safe: no accidental accepts
 
-**`<Space>dr`** - Reject the inline diff
+**`<Space>r`** - Reject the inline diff
 - Explicit, leader-based keybinding
 - Safe: no accidental rejects
 
 **Safety features:**
 - `gdy` (always accept everything) is **disabled** to prevent accidental mass-accepts
+- All diff actions require explicit leader-based keybindings
 - All diff actions require explicit leader-based keybindings
 
 ---

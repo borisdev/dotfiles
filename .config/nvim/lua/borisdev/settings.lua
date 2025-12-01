@@ -44,18 +44,9 @@ vim.cmd([[
 -- })
 
 vim.cmd([[
-    " Save cursor position before formatting and restore after
-    function! PreservePosition(command)
-        let l:save = winsaveview()
-        execute a:command
-        call winrestview(l:save)
-    endfunction
-
-    " Use preserved position formatters
-    autocmd BufWritePre *.html,*.css,*.js,*.json,*.md call PreservePosition('Prettier')
-    autocmd BufWritePre *.py call PreservePosition('Black')
-    autocmd BufWritePre *.py call PreservePosition('Isort')
-    autocmd BufWritePre *.py call PreservePosition('%s/\s\+$//e')
+    " Formatting is now handled by Conform.nvim (configured in init.lua)
+    " Formatting is now handled by Conform.nvim (configured in init.lua)
+    
     autocmd FileType markdown setlocal spell
     autocmd FileType gitcommit setlocal spell
     " autocmd BufWritePost *.py call Flake8()  " Disabled to prevent duplicate diagnostics with Pyright
