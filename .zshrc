@@ -1,6 +1,7 @@
 export TERM=xterm-256color
 export EDITOR=nvim
 export VISUAL=nvim
+export GOOSE_DISABLE_KEYRING=1
 alias vim=nvim
 alias rm="echo use: trash"
 alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'
