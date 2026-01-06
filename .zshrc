@@ -1,4 +1,5 @@
 export TERM=xterm-256color
+export GITHUB_PERSONAL_ACCESS_TOKEN="$(cat ~/GITHUB_PERSONAL_ACCESS_TOKEN)"
 export EDITOR=nvim
 export VISUAL=nvim
 export GOOSE_DISABLE_KEYRING=1
