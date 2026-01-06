@@ -123,19 +123,15 @@ extensions:
     description: Execute JavaScript code in a sandboxed environment
     bundled: true
     available_tools: []
-  github:
+  github_local:
     enabled: true
-    type: streamable_http
-    name: GITHUB
-    description: GITHUB
-    uri: https://api.githubcopilot.com/mcp/
+    type: stdio
+    name: github_local
+    cmd: npx
+    args: ["-y", "@modelcontextprotocol/server-github"]
     envs: {}
-    env_keys: []
-    headers:
-      Authorization: Bearer REDACTED
+    env_keys: ["GITHUB_PERSONAL_ACCESS_TOKEN"]
     timeout: 300
-    bundled: null
-    available_tools: []
 #AZURE_OPENAI_ENDPOINT: https://openai-rg-nobsmed.openai.azure.com/
 AZURE_OPENAI_ENDPOINT: https://boris-m3ndov9n-eastus2.cognitiveservices.azure.com/
 
