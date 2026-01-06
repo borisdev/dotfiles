@@ -84,16 +84,23 @@ require("lazy").setup({
             vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { fg = '#9cdcfe' })
             vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { fg = '#b5cea8' })
             vim.api.nvim_set_hl(0, 'CmpItemMenu', { fg = '#808080', italic = true })
-            vim.api.nvim_set_hl(0, 'CmpSel', { bg = '#404040', fg = '#ffffff' })
+            vim.api.nvim_set_hl(0, 'CmpSel', { bg = '#0078d4', fg = '#ffffff', bold = true })
+
+            vim.opt.pumblend = 0     -- no transparency
+            vim.opt.pumheight = 15   -- ensure you can scroll the menu
 
             cmp.setup({
+                preselect = cmp.PreselectMode.Item,
                 window = {
                     completion = {
-                        winhighlight = "Normal:CmpNormal,CursorLine:CmpSel,Search:None",
-                        border = 'rounded',
+                        border = "rounded",
+                        scrollbar = true,
+                        col_offset = 0,
+                        side_padding = 0, -- ✅ remove left/right padding so highlight reaches edge
+                        winhighlight = "Normal:CmpNormal,FloatBorder:CmpSel,CursorLine:CmpSel,PmenuSel:CmpSel,Search:None",
                     },
                     documentation = {
-                        border = 'rounded',
+                        border = "rounded",
                         winhighlight = "Normal:CmpNormal",
                     },
                 },
@@ -261,10 +268,15 @@ require("lazy").setup({
           graphql = { "prettierd", "prettier" },
         },
         -- Auto-format on save for configured filetypes
-        format_on_save = {
-          timeout_ms = 500,
-          lsp_fallback = true,
-        },
+        format_on_save = function(bufnr)
+          if vim.bo[bufnr].filetype == "markdown" then
+            return false
+          end
+          return {
+            timeout_ms = 500,
+            lsp_fallback = true,
+          }
+        end,
         -- Configure Ruff to use project's pyproject.toml if found
         formatters = {
           ruff_format = {
@@ -281,29 +293,6 @@ require("lazy").setup({
     -------------------------------------------------------
     -- nvim-lint: Linting (Ruff for Python)
     -------------------------------------------------------
-    {
-      "mfussenegger/nvim-lint",
-      config = function()
-        local lint = require("lint")
-        
-        lint.linters_by_ft = {
-          python = { "ruff" },
-          -- Add other linters as needed
-          -- javascript = { "eslint_d" },
-          -- typescript = { "eslint_d" },
-        }
-        
-        -- Auto-lint on save and when entering buffer
-        local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-        
-        vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-          group = lint_augroup,
-          callback = function()
-            lint.try_lint()
-          end,
-        })
-      end,
-    },
     {
         "vhyrro/luarocks.nvim",
         priority = 1001, -- this plugin needs to run before molten-nvim
@@ -380,7 +369,12 @@ require("lazy").setup({
     },
     {
         'nvim-telescope/telescope.nvim', tag = '0.1.6',
-        dependencies = { 'nvim-lua/plenary.nvim' }
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        config = function()
+            vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = 'Find files' })
+            vim.keymap.set('n', '<leader>fp', require('telescope.builtin').live_grep, { desc = 'Live grep' })
+            vim.keymap.set('n', '<leader>fg', require('telescope.builtin').git_files, { desc = 'Git files' })
+        end,
     },
     -- {
     --   "folke/which-key.nvim",
@@ -466,6 +460,43 @@ require("lazy").setup({
       -- dependencies = { "echasnovski/mini.icons" },
       opts = {}
     },
+    {
+      "lewis6991/satellite.nvim",
+      event = "VeryLazy",
+      config = function()
+        require('satellite').setup({
+          current_only = false,
+          winblend = 50,
+          zindex = 40,
+          excluded_filetypes = { "cmp_menu", "cmp_docs", "TelescopePrompt", "oil" },
+          width = 2,
+          handlers = {
+            cursor = {
+              symbols = { '⎺', '⎻', '⎼', '⎽' }
+            },
+            search = {
+              enable = true,
+            },
+            diagnostic = {
+              enable = true,
+            },
+            gitsigns = {
+              enable = true,
+            },
+            marks = {
+              enable = true,
+              show_builtins = false,
+            },
+          },
+        })
+      end,
+    },
+    {
+      "azorng/goose.nvim",
+      config = function()
+        require("goose").setup()
+      end,
+    },
 })
 
 
@@ -489,12 +520,12 @@ require("mason-lspconfig").setup({
   handlers = {
     -- default handler for servers we don't customize:
     function(server)
-      require("lspconfig")[server].setup({})
+      vim.lsp.config[server] = {}
     end,
 
     -- your HTML setup:
     html = function()
-      require("lspconfig").html.setup({
+      vim.lsp.config.html = {
         cmd = {"vscode-html-language-server", "--stdio"},
         filetypes = {"html"},
         init_options = {
@@ -502,7 +533,7 @@ require("mason-lspconfig").setup({
           embeddedLanguages = { css = true, javascript = true },
           provideFormatter = true,
         },
-      })
+      }
     end,
   },
 })
@@ -564,8 +595,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -----------------------------------------------------------
 -- basedpyright (Python LSP)
 -----------------------------------------------------------
-local lspconfig = require("lspconfig")
-lspconfig.basedpyright.setup({
+vim.lsp.config.basedpyright = {
   settings = {
     basedpyright = {
       analysis = {
@@ -576,7 +606,7 @@ lspconfig.basedpyright.setup({
       },
     },
   },
-})
+}
 
 require("oil").setup({
     view_options = {

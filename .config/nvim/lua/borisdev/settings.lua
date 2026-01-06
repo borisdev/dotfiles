@@ -15,6 +15,13 @@ vim.keymap.set("n", "<leader>P", '"+P')
 vim.keymap.set("v", "<leader>p", '"+p')
 vim.keymap.set("v", "<leader>P", '"+P')
 
+-- Copy current file path to clipboard
+vim.keymap.set("n", "<leader>cp", function()
+  local filepath = vim.fn.expand("%:p")
+  vim.fn.setreg("+", filepath)
+  print("Copied: " .. filepath)
+end, { desc = "Copy file path to clipboard" })
+
 
 vim.opt.mouse="a" -- mouse active in all modes
 vim.opt.background = "dark" 
