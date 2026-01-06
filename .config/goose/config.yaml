@@ -76,18 +76,6 @@ extensions:
     timeout: 300
     bundled: true
     available_tools: []
-  rube:
-    enabled: false
-    type: streamable_http
-    name: Rube
-    description: Seamlessly connect across 500+ applications including Slack, Gmail, Notion, Google Workspace, Microsoft Office, GitHub, and many more
-    uri: https://rube.app/mcp
-    envs: {}
-    env_keys: []
-    headers: {}
-    timeout: 300
-    bundled: null
-    available_tools: []
   google-trends:
     enabled: false
     type: stdio

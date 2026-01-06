@@ -495,6 +495,19 @@ require("lazy").setup({
       "azorng/goose.nvim",
       config = function()
         require("goose").setup()
+        
+        -- Fix Goose.nvim floating window colors
+        local function fix_floats()
+          vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
+          vim.api.nvim_set_hl(0, "FloatBorder", { link = "WinSeparator" })
+          
+          -- Goose-specific groups (they were "cleared", so we define them)
+          vim.api.nvim_set_hl(0, "GooseBackground", { link = "NormalFloat" })
+          vim.api.nvim_set_hl(0, "GooseBorder", { link = "FloatBorder" })
+        end
+        
+        vim.api.nvim_create_autocmd("ColorScheme", { callback = fix_floats })
+        fix_floats()
       end,
     },
 })
