@@ -19,6 +19,28 @@ vim.g.mapleader = " "
 
 vim.g.python3_host_prog = vim.fn.expand("~/.venvs/nvim/bin/python")
 
+-- Workaround for treesitter highlighter race / extmark range errors
+vim.g._ts_force_sync_parsing = true
+
+-- Stop treesitter in nofile markdown/goose floats to prevent crashes
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "goose" },
+  callback = function(args)
+    if vim.bo[args.buf].buftype == "nofile" then
+      pcall(vim.treesitter.stop, args.buf)
+    end
+  end,
+})
+
+-- Additional treesitter crash prevention for floating windows
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  callback = function(args)
+    local buf = args.buf
+    if vim.api.nvim_buf_get_option(buf, "buftype") == "nofile" then
+      pcall(vim.treesitter.stop, buf)
+    end
+  end,
+})
 
 
 -- Save the last cursor position in a file
@@ -84,20 +106,23 @@ require("lazy").setup({
             vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { fg = '#9cdcfe' })
             vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { fg = '#b5cea8' })
             vim.api.nvim_set_hl(0, 'CmpItemMenu', { fg = '#808080', italic = true })
-            vim.api.nvim_set_hl(0, 'CmpSel', { bg = '#0078d4', fg = '#ffffff', bold = true })
+            vim.api.nvim_set_hl(0, 'CmpSel', { bg = '#094771', fg = '#ffffff', bold = true })
 
             vim.opt.pumblend = 0     -- no transparency
             vim.opt.pumheight = 15   -- ensure you can scroll the menu
 
             cmp.setup({
                 preselect = cmp.PreselectMode.Item,
+                completion = {
+                    completeopt = 'menu,menuone,noinsert'
+                },
                 window = {
                     completion = {
                         border = "rounded",
                         scrollbar = true,
                         col_offset = 0,
                         side_padding = 0, -- ✅ remove left/right padding so highlight reaches edge
-                        winhighlight = "Normal:CmpNormal,FloatBorder:CmpSel,CursorLine:CmpSel,PmenuSel:CmpSel,Search:None",
+                        winhighlight = "Normal:CmpNormal,FloatBorder:CmpSel,CursorLine:CmpSel,PmenuSel:CmpSel,Search:None,PmenuSbar:CmpNormal,PmenuThumb:CmpSel",
                     },
                     documentation = {
                         border = "rounded",
@@ -115,7 +140,22 @@ require("lazy").setup({
                     ['<C-Space>'] = cmp.mapping.complete(),
                     ['<C-e>'] = cmp.mapping.abort(),
                     ['<CR>'] = cmp.mapping.confirm({ select = true }),
-                    -- Use Ctrl+j/k for completion navigation to avoid Tab conflict with Copilot
+                    -- Arrow keys for completion navigation
+                    ['<Down>'] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_next_item()
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
+                    ['<Up>'] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
+                    -- Keep Ctrl+j/k as backup
                     ['<C-j>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item()
@@ -493,21 +533,48 @@ require("lazy").setup({
     },
     {
       "azorng/goose.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        {
+          "MeanderingProgrammer/render-markdown.nvim",
+          opts = { anti_conceal = { enabled = false } },
+        },
+      },
       config = function()
-        require("goose").setup()
+        -- Ensure goose CLI is in PATH
+        local goose_path = "/Users/borisdev/.local/bin"
+        if not string.match(vim.env.PATH, goose_path) then
+          vim.env.PATH = goose_path .. ":" .. vim.env.PATH
+        end
         
-        -- Fix Goose.nvim floating window colors
-        local function fix_floats()
+        require("goose").setup({ 
+          default_global_keymaps = true,
+          ui = {
+            window_width = 0.8,
+            window_height = 0.8,
+            min_height = 10,
+            min_width = 40
+          },
+          goose = {
+            session_auto_create = true,
+            session_name_prefix = "nvim-"
+          }
+        })
+        
+        -- Fix Goose.nvim floating window colors to remove purple
+        local function fix_goose_colors()
           vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
           vim.api.nvim_set_hl(0, "FloatBorder", { link = "WinSeparator" })
           
-          -- Goose-specific groups (they were "cleared", so we define them)
-          vim.api.nvim_set_hl(0, "GooseBackground", { link = "NormalFloat" })
-          vim.api.nvim_set_hl(0, "GooseBorder", { link = "FloatBorder" })
+          -- Goose-specific groups (override the purple theme)
+          vim.api.nvim_set_hl(0, "GooseBackground", { bg = "NONE", fg = "NONE" })
+          vim.api.nvim_set_hl(0, "GooseBorder", { link = "WinSeparator" })
+          vim.api.nvim_set_hl(0, "GooseInput", { link = "Normal" })
+          vim.api.nvim_set_hl(0, "GooseOutput", { link = "Normal" })
         end
         
-        vim.api.nvim_create_autocmd("ColorScheme", { callback = fix_floats })
-        fix_floats()
+        vim.api.nvim_create_autocmd("ColorScheme", { callback = fix_goose_colors })
+        fix_goose_colors()
       end,
     },
 })

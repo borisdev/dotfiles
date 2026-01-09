@@ -1,0 +1,13 @@
+OUTPUT HYGIENE (CRITICAL):
+- Never write Markdown fences (```), Markdown headers (###), or line-number prefixes like "12:" into any source file.
+- Source files must contain ONLY valid code for that language (e.g., .py must be valid Python from the first character).
+- Line numbers are allowed ONLY in chat/terminal display for reference, never in file contents.
+
+EDITING RULES:
+- When refactoring, prefer minimal, targeted edits (patch-style) instead of rewriting entire files.
+- After every file edit, immediately re-open/read the edited file and verify there are no leading line-number prefixes ("N:"), no ``` fences, and no "### /path" headers.
+- If you need to show changes to me, show a unified diff (git diff style). Do not paste full files with numbered lines.
+
+PYTHON-SPECIFIC:
+- Do not introduce "pyright:" comments unless I asked.
+- Keep imports and module headers clean; never prepend any non-Python metadata.

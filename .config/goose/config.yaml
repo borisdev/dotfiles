@@ -1,6 +1,6 @@
 keyring: false
 GOOSE_TELEMETRY_ENABLED: false
-GOOSE_MODE: approve
+GOOSE_MODE: auto
 GOOSE_PROVIDER: azure_openai
 extensions:
   developer:
