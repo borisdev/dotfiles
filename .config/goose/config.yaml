@@ -1,4 +1,24 @@
 keyring: false
+
+editor:
+  mode: raw
+
+  show_line_numbers: false
+  render_markdown: false
+  annotate_paths: false
+  show_file_headers: false
+
+viewer:
+  pager: cat
+  format: plain
+
+defaults:
+  output_format: raw
+
+safety:
+  confirm_writes: true
+  sanitize_on_write: true
+  pre_write_hook: python ~/.config/goose/sanitize.py
 GOOSE_TELEMETRY_ENABLED: false
 GOOSE_MODE: auto
 GOOSE_PROVIDER: azure_openai
