@@ -261,7 +261,7 @@ require("lazy").setup({
             enabled = false,                  -- IMPORTANT: use cmp instead of ghost text
           },
           filetypes = {
-            markdown = false,                 -- no Copilot in markdown
+            markdown = true,                  -- enable Copilot in markdown
             gitcommit = true,
             ["*"] = true,
           },
