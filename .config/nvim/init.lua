@@ -288,7 +288,7 @@ require("lazy").setup({
       opts = {
         formatters_by_ft = {
           -- Python via Ruff (replaces black + isort)
-          python = { "ruff_format" },
+          python = { "ruff_organize_imports", "ruff_format" },
           -- JS / TS / Web stack via Prettierd / Prettier
           javascript = { "prettierd", "prettier" },
           javascriptreact = { "prettierd", "prettier" },
@@ -319,6 +319,10 @@ require("lazy").setup({
         end,
         -- Configure Ruff to use project's pyproject.toml if found
         formatters = {
+          ruff_organize_imports = {
+            command = "ruff",
+            args = { "check", "--select", "I", "--fix", "--stdin-filename", "$FILENAME", "-"},
+          },
           ruff_format = {
             -- Ruff will automatically find pyproject.toml in parent directories
             -- but we can explicitly set it if needed
@@ -603,6 +607,9 @@ require("mason-lspconfig").setup({
       vim.lsp.config[server] = {}
     end,
 
+    -- Disable pyright from Mason (we use basedpyright instead)
+    pyright = function() end,
+
     -- your HTML setup:
     html = function()
       vim.lsp.config.html = {
@@ -676,6 +683,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- basedpyright (Python LSP)
 -----------------------------------------------------------
 vim.lsp.config.basedpyright = {
+  cmd = { '/Users/borisdev/.local/bin/basedpyright-langserver', '--stdio' },
+  root_dir = vim.fs.root(0, {'.git', 'pyproject.toml'}),
   settings = {
     basedpyright = {
       analysis = {
@@ -683,6 +692,8 @@ vim.lsp.config.basedpyright = {
         autoSearchPaths = true,
         diagnosticMode = "openFilesOnly",
         useLibraryCodeForTypes = true,
+        venvPath = ".",
+        venv = ".venv",
       },
     },
   },
