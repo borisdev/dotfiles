@@ -19,6 +19,30 @@ vim.g.mapleader = " "
 
 vim.g.python3_host_prog = vim.fn.expand("~/.venvs/nvim/bin/python")
 
+-- Text formatting options
+vim.opt.textwidth = 88  -- Wrap at 88 characters (Python Black default)
+vim.opt.formatoptions:append("t")  -- Auto-wrap text using textwidth
+vim.opt.formatoptions:append("c")  -- Auto-wrap comments
+vim.opt.formatoptions:append("q")  -- Allow formatting comments with gq
+vim.opt.formatoptions:remove("o")  -- Don't insert comment leader with o/O
+
+-- Filetype-specific textwidth
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
+  callback = function()
+    vim.opt_local.textwidth = 88  -- Black's default line length
+    vim.opt_local.formatoptions:append("t")
+    vim.opt_local.formatoptions:append("c")
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {"markdown", "text", "gitcommit"},
+  callback = function()
+    vim.opt_local.textwidth = 80
+  end,
+})
+
 -- Workaround for treesitter highlighter race / extmark range errors
 vim.g._ts_force_sync_parsing = true
 
@@ -458,7 +482,7 @@ require("lazy").setup({
         event = "BufEnter",
         config = function()
             require('goto-preview').setup({
-                default_mappings = true,
+                default_mappings = false,  -- We'll set mappings manually
                 width = 120,
                 height = 15,
                 border = {"↖", "─" ,"┐", "│", "┘", "─", "└", "│"},
@@ -480,7 +504,7 @@ require("lazy").setup({
                 post_close_hook = nil,
                 references = {
                     provider = "telescope",
-                    telescope = require("telescope.themes").get_dropdown({ 
+                    telescope = require("telescope.themes").get_dropdown({
                         hide_preview = false,
                         layout_config = { width = 0.8, height = 0.6 }
                     })
@@ -489,11 +513,21 @@ require("lazy").setup({
                 dismiss_on_move = false,
                 force_close = true,
                 bufhidden = "wipe",
-                stack_floating_preview_windows = false,
-                same_file_float_preview = false,
+                stack_floating_preview_windows = true,
+                same_file_float_preview = true,  -- Show preview even for same file
                 preview_window_title = { enable = true, position = "left" },
                 zindex = 1,
             })
+
+            -- Set up keymappings explicitly with function wrappers
+            vim.keymap.set('n', 'gpd', function()
+                require('goto-preview').goto_preview_definition()
+            end, { desc = "Preview definition" })
+            vim.keymap.set('n', 'gpt', function() require('goto-preview').goto_preview_type_definition() end, { desc = "Preview type definition" })
+            vim.keymap.set('n', 'gpi', function() require('goto-preview').goto_preview_implementation() end, { desc = "Preview implementation" })
+            vim.keymap.set('n', 'gpD', function() require('goto-preview').goto_preview_declaration() end, { desc = "Preview declaration" })
+            vim.keymap.set('n', 'gP', function() require('goto-preview').close_all_win() end, { desc = "Close all preview windows" })
+            vim.keymap.set('n', 'gpr', function() require('goto-preview').goto_preview_references() end, { desc = "Preview references" })
         end,
     },
     {
@@ -645,20 +679,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', 'gd', function()
-        local params = vim.lsp.util.make_position_params(0, 'utf-8')
-        vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, config)
-            if err then return end
-            if not result or vim.tbl_isempty(result) then return end
-            
-            -- Jump to first result directly
-            if vim.tbl_islist(result) then
-                vim.lsp.util.jump_to_location(result[1], 'utf-8')
-            else
-                vim.lsp.util.jump_to_location(result, 'utf-8')
-            end
-        end)
-    end, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
@@ -682,22 +703,34 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -----------------------------------------------------------
 -- basedpyright (Python LSP)
 -----------------------------------------------------------
-vim.lsp.config.basedpyright = {
-  cmd = { '/Users/borisdev/.local/bin/basedpyright-langserver', '--stdio' },
-  root_dir = vim.fs.root(0, {'.git', 'pyproject.toml'}),
-  settings = {
-    basedpyright = {
-      analysis = {
-        typeCheckingMode = "standard",  -- or "basic" / "strict"
-        autoSearchPaths = true,
-        diagnosticMode = "openFilesOnly",
-        useLibraryCodeForTypes = true,
-        venvPath = ".",
-        venv = ".venv",
+-- Enable basedpyright for Python files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
+  callback = function(args)
+    local root_dir = vim.fs.root(args.buf, {'.git', 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', 'pyrightconfig.json'})
+    if not root_dir then
+      root_dir = vim.fn.getcwd()
+    end
+
+    vim.lsp.start({
+      name = 'basedpyright',
+      cmd = { '/Users/borisdev/.local/bin/basedpyright-langserver', '--stdio' },
+      root_dir = root_dir,
+      settings = {
+        basedpyright = {
+          analysis = {
+            typeCheckingMode = "standard",
+            autoSearchPaths = true,
+            diagnosticMode = "openFilesOnly",
+            useLibraryCodeForTypes = true,
+            venvPath = ".",
+            venv = ".venv",
+          },
+        },
       },
-    },
-  },
-}
+    })
+  end,
+})
 
 require("oil").setup({
     view_options = {
