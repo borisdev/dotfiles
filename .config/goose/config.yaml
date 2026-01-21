@@ -32,32 +32,11 @@ extensions:
     timeout: 300
     bundled: true
     available_tools: []
-  todo:
-    enabled: true
-    type: platform
-    name: todo
-    description: Enable a todo list for Goose so it can keep track of what it is doing
-    bundled: true
-    available_tools: []
-  chatrecall:
-    enabled: true
-    type: platform
-    name: chatrecall
-    description: Search past conversations and load session summaries for contextual memory
-    bundled: true
-    available_tools: []
   extensionmanager:
     enabled: true
     type: platform
     name: Extension Manager
     description: Enable extension management tools for discovering, enabling, and disabling extensions
-    bundled: true
-    available_tools: []
-  skills:
-    enabled: true
-    type: platform
-    name: skills
-    description: Load and use skills from .claude/skills or .goose/skills directories
     bundled: true
     available_tools: []
   computercontroller:
@@ -66,15 +45,6 @@ extensions:
     name: computercontroller
     description: General computer control tools that don't require you to be a developer or engineer.
     display_name: Computer Controller
-    timeout: 300
-    bundled: true
-    available_tools: []
-  autovisualiser:
-    enabled: true
-    type: builtin
-    name: autovisualiser
-    description: Data visualization and UI generation tools
-    display_name: Auto Visualiser
     timeout: 300
     bundled: true
     available_tools: []
@@ -96,34 +66,6 @@ extensions:
     timeout: 300
     bundled: true
     available_tools: []
-  google-trends:
-    enabled: false
-    type: stdio
-    name: google-trends
-    description: ""
-    cmd: uvx
-    args:
-      - google-trends-mcp-qihoo
-    envs: {}
-    env_keys: []
-    timeout: 300
-    bundled: null
-    available_tools: []
-  tavilywebsearch:
-    enabled: false
-    type: stdio
-    name: Tavily Web Search
-    description: Search the web with Tavily MCP
-    cmd: npx
-    args:
-      - -y
-      - tavily-mcp
-    envs: {}
-    env_keys:
-      - TAVILY_API_KEY
-    timeout: 300
-    bundled: null
-    available_tools: []
   code_execution:
     enabled: true
     type: platform
@@ -143,13 +85,9 @@ extensions:
 #AZURE_OPENAI_ENDPOINT: https://openai-rg-nobsmed.openai.azure.com/
 AZURE_OPENAI_ENDPOINT: https://boris-m3ndov9n-eastus2.cognitiveservices.azure.com/
 
-#AZURE_OPENAI_DEPLOYMENT_NAME: gpt-4.1
 AZURE_OPENAI_DEPLOYMENT_NAME: gpt-5.2-chat
-#AZURE_OPENAI_API_VERSION: 2024-12-01-preview
 AZURE_OPENAI_API_VERSION: 2025-04-01-preview
-# GOOSE_LEAD_MODEL: gpt-4.1
 GOOSE_LEAD_MODEL: gpt-5.2-chat
-# GOOSE_MODEL: gpt-4.1
 GOOSE_MODEL: gpt-5.2-chat
 GOOSE_LEAD_TURNS: 5
 GOOSE_LEAD_FAILURE_THRESHOLD: 1

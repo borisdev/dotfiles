@@ -26,6 +26,15 @@ vim.opt.formatoptions:append("c")  -- Auto-wrap comments
 vim.opt.formatoptions:append("q")  -- Allow formatting comments with gq
 vim.opt.formatoptions:remove("o")  -- Don't insert comment leader with o/O
 
+-- Disable LSP for fugitive buffers to prevent errors
+vim.api.nvim_create_autocmd("BufReadCmd", {
+  pattern = "fugitive://*",
+  callback = function(args)
+    vim.b[args.buf].lsp_disable = true
+  end,
+})
+
+
 -- Filetype-specific textwidth
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
