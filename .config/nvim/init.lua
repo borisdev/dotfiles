@@ -612,12 +612,23 @@ require("lazy").setup({
         local function fix_goose_colors()
           vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
           vim.api.nvim_set_hl(0, "FloatBorder", { link = "WinSeparator" })
-          
+
           -- Goose-specific groups (override the purple theme)
           vim.api.nvim_set_hl(0, "GooseBackground", { bg = "NONE", fg = "NONE" })
           vim.api.nvim_set_hl(0, "GooseBorder", { link = "WinSeparator" })
           vim.api.nvim_set_hl(0, "GooseInput", { link = "Normal" })
           vim.api.nvim_set_hl(0, "GooseOutput", { link = "Normal" })
+
+          -- Fix markdown rendering in goose windows (grey blocks with invisible text)
+          vim.api.nvim_set_hl(0, "RenderMarkdownCode", { bg = "#2d2d2d", fg = "#d4d4d4" })
+          vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", { bg = "#3a3a3a", fg = "#e6e6e6" })
+          vim.api.nvim_set_hl(0, "RenderMarkdownTableHead", { bg = "#2d2d2d", fg = "#ffffff", bold = true })
+          vim.api.nvim_set_hl(0, "RenderMarkdownTableRow", { bg = "#252526", fg = "#d4d4d4" })
+          vim.api.nvim_set_hl(0, "RenderMarkdownTableFill", { bg = "#1e1e1e", fg = "#808080" })
+
+          -- Additional markdown highlights for better visibility
+          vim.api.nvim_set_hl(0, "@markup.raw.markdown_inline", { bg = "#3a3a3a", fg = "#e6e6e6" })
+          vim.api.nvim_set_hl(0, "@markup.raw.block.markdown", { bg = "#2d2d2d", fg = "#d4d4d4" })
         end
         
         vim.api.nvim_create_autocmd("ColorScheme", { callback = fix_goose_colors })

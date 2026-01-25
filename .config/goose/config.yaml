@@ -1,3 +1,14 @@
+AZURE_OPENAI_ENDPOINT: https://boris-m3ndov9n-eastus2.cognitiveservices.azure.com/
+AZURE_OPENAI_DEPLOYMENT_NAME: gpt-5.2-chat
+AZURE_OPENAI_API_VERSION: 2025-04-01-preview
+GOOSE_LEAD_MODEL: gpt-5.2-chat
+GOOSE_MODEL: gpt-5.2-chat
+GOOSE_LEAD_TURNS: 5
+GOOSE_LEAD_FAILURE_THRESHOLD: 1
+GOOSE_LEAD_FALLBACK_TURNS: 2
+GOOSE_EDITOR_API_KEY="YOUR_API_KEY_HERE"
+GOOSE_EDITOR_HOST="https://api.openai.com/v1"
+GOOSE_EDITOR_MODEL="gpt-4o"
 keyring: false
 
 editor:
@@ -82,13 +93,3 @@ extensions:
     envs: {}
     env_keys: ["GITHUB_PERSONAL_ACCESS_TOKEN"]
     timeout: 300
-#AZURE_OPENAI_ENDPOINT: https://openai-rg-nobsmed.openai.azure.com/
-AZURE_OPENAI_ENDPOINT: https://boris-m3ndov9n-eastus2.cognitiveservices.azure.com/
-
-AZURE_OPENAI_DEPLOYMENT_NAME: gpt-5.2-chat
-AZURE_OPENAI_API_VERSION: 2025-04-01-preview
-GOOSE_LEAD_MODEL: gpt-5.2-chat
-GOOSE_MODEL: gpt-5.2-chat
-GOOSE_LEAD_TURNS: 5
-GOOSE_LEAD_FAILURE_THRESHOLD: 1
-GOOSE_LEAD_FALLBACK_TURNS: 2
