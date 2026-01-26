@@ -16,6 +16,19 @@ vim.g.mapleader = " "
 -- vim.g.maplocalleader = "\\"
 -- vim.g.python3_host_prog = '/opt/homebrew/bin/python3.12'
 --vim.g.python3_host_prog = '/opt/homebrew/bin/python3.12'
+--
+--
+
+-- Safety / recovery
+vim.opt.undofile = true
+vim.opt.backup = true
+vim.opt.writebackup = true
+vim.opt.confirm = true
+
+local state = vim.fn.stdpath("state")
+vim.opt.undodir = state .. "/undo//"
+vim.opt.backupdir = state .. "/backup//"
+vim.opt.directory = state .. "/swap//"-
 
 vim.g.python3_host_prog = vim.fn.expand("~/.venvs/nvim/bin/python")
 

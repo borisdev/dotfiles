@@ -1,37 +1,6 @@
-AZURE_OPENAI_ENDPOINT: https://boris-m3ndov9n-eastus2.cognitiveservices.azure.com/
-AZURE_OPENAI_DEPLOYMENT_NAME: gpt-5.2-chat
-AZURE_OPENAI_API_VERSION: 2025-04-01-preview
-GOOSE_LEAD_MODEL: gpt-5.2-chat
-GOOSE_MODEL: gpt-5.2-chat
-GOOSE_LEAD_TURNS: 5
-GOOSE_LEAD_FAILURE_THRESHOLD: 1
-GOOSE_LEAD_FALLBACK_TURNS: 2
-GOOSE_EDITOR_API_KEY="YOUR_API_KEY_HERE"
-GOOSE_EDITOR_HOST="https://api.openai.com/v1"
-GOOSE_EDITOR_MODEL="gpt-4o"
 keyring: false
-
-editor:
-  mode: raw
-
-  show_line_numbers: false
-  render_markdown: false
-  annotate_paths: false
-  show_file_headers: false
-
-viewer:
-  pager: cat
-  format: plain
-
-defaults:
-  output_format: raw
-
-safety:
-  confirm_writes: true
-  sanitize_on_write: true
-  pre_write_hook: python ~/.config/goose/sanitize.py
 GOOSE_TELEMETRY_ENABLED: false
-GOOSE_MODE: auto
+GOOSE_MODE: approve
 GOOSE_PROVIDER: azure_openai
 extensions:
   developer:
@@ -43,19 +12,49 @@ extensions:
     timeout: 300
     bundled: true
     available_tools: []
+  todo:
+    enabled: false
+    type: platform
+    name: todo
+    description: Enable a todo list for Goose so it can keep track of what it is doing
+    bundled: true
+    available_tools: []
+  chatrecall:
+    enabled: false
+    type: platform
+    name: chatrecall
+    description: Search past conversations and load session summaries for contextual memory
+    bundled: true
+    available_tools: []
   extensionmanager:
-    enabled: true
+    enabled: false
     type: platform
     name: Extension Manager
     description: Enable extension management tools for discovering, enabling, and disabling extensions
     bundled: true
     available_tools: []
-  computercontroller:
+  skills:
     enabled: true
+    type: platform
+    name: skills
+    description: Load and use skills from .claude/skills or .goose/skills directories
+    bundled: true
+    available_tools: []
+  computercontroller:
+    enabled: false
     type: builtin
     name: computercontroller
     description: General computer control tools that don't require you to be a developer or engineer.
     display_name: Computer Controller
+    timeout: 300
+    bundled: true
+    available_tools: []
+  autovisualiser:
+    enabled: false
+    type: builtin
+    name: autovisualiser
+    description: Data visualization and UI generation tools
+    display_name: Auto Visualiser
     timeout: 300
     bundled: true
     available_tools: []
@@ -77,6 +76,46 @@ extensions:
     timeout: 300
     bundled: true
     available_tools: []
+  rube:
+    enabled: false
+    type: streamable_http
+    name: Rube
+    description: Seamlessly connect across 500+ applications including Slack, Gmail, Notion, Google Workspace, Microsoft Office, GitHub, and many more
+    uri: https://rube.app/mcp
+    envs: {}
+    env_keys: []
+    headers: {}
+    timeout: 300
+    bundled: null
+    available_tools: []
+  google-trends:
+    enabled: false
+    type: stdio
+    name: google-trends
+    description: ''
+    cmd: uvx
+    args:
+    - google-trends-mcp-qihoo
+    envs: {}
+    env_keys: []
+    timeout: 300
+    bundled: null
+    available_tools: []
+  tavilywebsearch:
+    enabled: false
+    type: stdio
+    name: Tavily Web Search
+    description: Search the web with Tavily MCP
+    cmd: npx
+    args:
+    - -y
+    - tavily-mcp
+    envs: {}
+    env_keys:
+    - TAVILY_API_KEY
+    timeout: 300
+    bundled: null
+    available_tools: []
   code_execution:
     enabled: true
     type: platform
@@ -84,12 +123,18 @@ extensions:
     description: Execute JavaScript code in a sandboxed environment
     bundled: true
     available_tools: []
-  github_local:
-    enabled: true
+  browserbase:
+    enabled: false
     type: stdio
-    name: github_local
+    name: Browserbase
+    description: Browser automation and web scraping
     cmd: npx
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    args:
+    - -y
+    - '@browserbasehq/mcp-server-browserbase'
     envs: {}
-    env_keys: ["GITHUB_PERSONAL_ACCESS_TOKEN"]
+    env_keys:
+    - BROWSERBASE_API_KEY
     timeout: 300
+    bundled: null
+    available_tools: []
