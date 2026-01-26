@@ -28,7 +28,7 @@ vim.opt.confirm = true
 local state = vim.fn.stdpath("state")
 vim.opt.undodir = state .. "/undo//"
 vim.opt.backupdir = state .. "/backup//"
-vim.opt.directory = state .. "/swap//"-
+vim.opt.directory = state .. "/swap//"
 
 vim.g.python3_host_prog = vim.fn.expand("~/.venvs/nvim/bin/python")
 
