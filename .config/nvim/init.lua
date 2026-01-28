@@ -19,6 +19,9 @@ vim.g.mapleader = " "
 --
 --
 
+-- Use system clipboard
+vim.opt.clipboard = "unnamedplus"
+
 -- Safety / recovery
 vim.opt.undofile = true
 vim.opt.backup = true
@@ -38,6 +41,13 @@ vim.opt.formatoptions:append("t")  -- Auto-wrap text using textwidth
 vim.opt.formatoptions:append("c")  -- Auto-wrap comments
 vim.opt.formatoptions:append("q")  -- Allow formatting comments with gq
 vim.opt.formatoptions:remove("o")  -- Don't insert comment leader with o/O
+
+-- Indentation settings (use spaces, not tabs)
+vim.opt.expandtab = true      -- Convert tabs to spaces
+vim.opt.tabstop = 4           -- Tab width = 4 spaces
+vim.opt.shiftwidth = 4        -- Indent width = 4 spaces
+vim.opt.softtabstop = 4       -- Backspace removes 4 spaces
+vim.opt.smartindent = true    -- Smart autoindenting
 
 -- Disable LSP for fugitive buffers to prevent errors
 vim.api.nvim_create_autocmd("BufReadCmd", {
@@ -160,7 +170,7 @@ require("lazy").setup({
             cmp.setup({
                 preselect = cmp.PreselectMode.Item,
                 completion = {
-                    completeopt = 'menu,menuone,noinsert'
+                    completeopt = 'menu,menuone,noselect'
                 },
                 window = {
                     completion = {
@@ -185,7 +195,10 @@ require("lazy").setup({
                     ['<C-f>'] = cmp.mapping.scroll_docs(4),
                     ['<C-Space>'] = cmp.mapping.complete(),
                     ['<C-e>'] = cmp.mapping.abort(),
-                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                    ['<CR>'] = cmp.mapping.confirm({
+                        select = true,
+                        behavior = cmp.ConfirmBehavior.Insert,
+                    }),
                     -- Arrow keys for completion navigation
                     ['<Down>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
