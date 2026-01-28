@@ -1,3 +1,4 @@
+ulimit -n 4096
 export TERM=xterm-256color
 export GITHUB_PERSONAL_ACCESS_TOKEN="$(cat ~/GITHUB_PERSONAL_ACCESS_TOKEN)"
 export EDITOR=nvim
