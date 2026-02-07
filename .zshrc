@@ -1,11 +1,12 @@
 export TERM=xterm-256color
+export UV_ENV_FILE=".env .env.local"
 export GITHUB_PERSONAL_ACCESS_TOKEN="$(cat ~/GITHUB_PERSONAL_ACCESS_TOKEN)"
 export EDITOR=nvim
 export VISUAL=nvim
 export GOOSE_DISABLE_KEYRING=1
-export GOOSE_TELEMETRY_ENABLED: false
-export GOOSE_MODE: approve
-export GOOSE_PROVIDER: azure_openai
+export GOOSE_TELEMETRY_ENABLED=false
+export GOOSE_MODE=approve
+export GOOSE_PROVIDER=azure_openai
 export AZURE_OPENAI_ENDPOINT="https://boris-m3ndov9n-eastus2.cognitiveservices.azure.com/"
 export AZURE_OPENAI_DEPLOYMENT_NAME="gpt-5.2-chat"
 export AZURE_OPENAI_API_VERSION="2025-04-01-preview"
@@ -15,9 +16,9 @@ export GOOSE_MODEL="gpt-4.1"
 export GOOSE_EDITOR_API_KEY="$AZURE_OPENAI_API_KEY"
 export GOOSE_EDITOR_HOST="https://<your-resource-name>.openai.azure.com/openai/v1"
 export GOOSE_EDITOR_MODEL="gpt-5.2-chat"   # or whatever model/deployment id Azure expects
-export GOOSE_LEAD_TURNS: 5
-export GOOSE_LEAD_FAILURE_THRESHOLD: 1
-export GOOSE_LEAD_FALLBACK_TURNS: 2
+export GOOSE_LEAD_TURNS=5
+export GOOSE_LEAD_FAILURE_THRESHOLD=1
+export GOOSE_LEAD_FALLBACK_TURNS=2
 alias vim=nvim
 alias rm="echo use: trash"
 alias dotgit='git --git-dir=$HOME/workspace/dotfiles.git/ --work-tree=$HOME'

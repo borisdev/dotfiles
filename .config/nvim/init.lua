@@ -72,6 +72,9 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = {"markdown", "text", "gitcommit"},
   callback = function()
     vim.opt_local.textwidth = 80
+    -- Disable concealment to show all characters in markdown
+    vim.opt_local.conceallevel = 0
+    vim.opt_local.concealcursor = ""
   end,
 })
 
@@ -610,7 +613,7 @@ require("lazy").setup({
         "nvim-lua/plenary.nvim",
         {
           "MeanderingProgrammer/render-markdown.nvim",
-          opts = { anti_conceal = { enabled = false } },
+          opts = { anti_conceal = { enabled = true } },
         },
       },
       config = function()
