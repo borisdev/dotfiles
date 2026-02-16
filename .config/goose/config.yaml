@@ -76,46 +76,6 @@ extensions:
     timeout: 300
     bundled: true
     available_tools: []
-  rube:
-    enabled: false
-    type: streamable_http
-    name: Rube
-    description: Seamlessly connect across 500+ applications including Slack, Gmail, Notion, Google Workspace, Microsoft Office, GitHub, and many more
-    uri: https://rube.app/mcp
-    envs: {}
-    env_keys: []
-    headers: {}
-    timeout: 300
-    bundled: null
-    available_tools: []
-  google-trends:
-    enabled: false
-    type: stdio
-    name: google-trends
-    description: ''
-    cmd: uvx
-    args:
-    - google-trends-mcp-qihoo
-    envs: {}
-    env_keys: []
-    timeout: 300
-    bundled: null
-    available_tools: []
-  tavilywebsearch:
-    enabled: false
-    type: stdio
-    name: Tavily Web Search
-    description: Search the web with Tavily MCP
-    cmd: npx
-    args:
-    - -y
-    - tavily-mcp
-    envs: {}
-    env_keys:
-    - TAVILY_API_KEY
-    timeout: 300
-    bundled: null
-    available_tools: []
   code_execution:
     enabled: true
     type: platform
@@ -130,11 +90,11 @@ extensions:
     description: Browser automation and web scraping
     cmd: npx
     args:
-    - -y
-    - '@browserbasehq/mcp-server-browserbase'
+      - -y
+      - "@browserbasehq/mcp-server-browserbase"
     envs: {}
     env_keys:
-    - BROWSERBASE_API_KEY
+      - BROWSERBASE_API_KEY
     timeout: 300
     bundled: null
     available_tools: []

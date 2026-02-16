@@ -1,5 +1,67 @@
 export TERM=xterm-256color
-export UV_ENV_FILE=".env .env.local"
+
+# ==============================================================================
+# UV .env FILE AUTO-DISCOVERY
+# ==============================================================================
+# Problem: Hard-coding UV_ENV_FILE to a specific repo breaks when working in
+#          multiple projects. Each repo has its own .env at the project root.
+#
+# Solution: Automatically find the nearest .env file by walking up the directory
+#           tree from wherever you run `uv`. This works across all repos without
+#           manual configuration.
+#
+# How it works:
+#   1. Start from current directory ($PWD)
+#   2. Check if .env exists in current dir
+#   3. If not, check parent directories up to filesystem root (/)
+#   4. Stop early if we hit a git root (don't search outside the repo)
+#   5. Export UV_ENV_FILE if found, otherwise uv uses its defaults
+#
+# Why this is better than static path:
+#   - Works in nobsmed-v2, future repos, and any project with .env at root
+#   - Run `uv` from any subdirectory and it finds the project .env
+#   - No manual updates needed when switching repos
+# ==============================================================================
+
+find_project_env() {
+    local dir="$PWD"
+
+    # Walk up directory tree looking for .env file
+    while [[ "$dir" != "/" ]]; do
+        # Found .env in current directory
+        if [[ -f "$dir/.env" ]]; then
+            echo "$dir/.env"
+            return 0
+        fi
+
+        # If we hit git root, check there and stop searching
+        # (don't search outside the repository boundary)
+        if [[ -d "$dir/.git" ]]; then
+            if [[ -f "$dir/.env" ]]; then
+                echo "$dir/.env"
+                return 0
+            fi
+            # No .env at git root, give up
+            break
+        fi
+
+        # Move up one directory
+        dir="$(dirname "$dir")"
+    done
+
+    # No .env found - uv will use its default behavior
+    return 1
+}
+
+# Set UV_ENV_FILE dynamically based on current location
+# This runs every time a new shell starts or when you cd to a new directory
+if env_file=$(find_project_env); then
+    export UV_ENV_FILE="$env_file"
+else
+    # No .env found - unset so uv uses defaults
+    unset UV_ENV_FILE
+fi
+
 export GITHUB_PERSONAL_ACCESS_TOKEN="$(cat ~/GITHUB_PERSONAL_ACCESS_TOKEN)"
 export EDITOR=nvim
 export VISUAL=nvim
