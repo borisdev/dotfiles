@@ -69,6 +69,8 @@ export GOOSE_DISABLE_KEYRING=1
 export GOOSE_TELEMETRY_ENABLED=false
 export GOOSE_MODE=approve
 export GOOSE_PROVIDER=azure_openai
+export AZURE_OPENAI_API_KEY="$(cat ~/AZURE_OPENAI_API_KEY)"
+export AZURE_API_KEY="$(cat ~/AZURE_OPENAI_API_KEY)"
 export AZURE_OPENAI_ENDPOINT="https://boris-m3ndov9n-eastus2.cognitiveservices.azure.com/"
 export AZURE_OPENAI_DEPLOYMENT_NAME="gpt-5.2-chat"
 export AZURE_OPENAI_API_VERSION="2025-04-01-preview"
@@ -76,7 +78,7 @@ export GOOSE_LEAD_MODEL="gpt-5.2-chat"
 export GOOSE_MODEL="gpt-4.1"
 # Enhanced editing (Azure OpenAI v1-compatible endpoint)
 export GOOSE_EDITOR_API_KEY="$AZURE_OPENAI_API_KEY"
-export GOOSE_EDITOR_HOST="https://<your-resource-name>.openai.azure.com/openai/v1"
+export GOOSE_EDITOR_HOST="https://boris-m3ndov9n-eastus2.openai.azure.com/openai/v1"
 export GOOSE_EDITOR_MODEL="gpt-5.2-chat"   # or whatever model/deployment id Azure expects
 export GOOSE_LEAD_TURNS=5
 export GOOSE_LEAD_FAILURE_THRESHOLD=1
@@ -114,12 +116,7 @@ source $ZSH/oh-my-zsh.sh
 # fuzzy file and dir finder with ctrl-t
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-source $ZSH/oh-my-zsh.sh
 
-
-# To activate completions for zsh you need to have bashcompinit enabled in zsh:
-autoload -U bashcompinit
-bashcompinit
 # export PATH="$HOME/.poetry/bin:$PATH"
 # Created by `pipx` on 2022-12-20 23:26:31
 # export PATH="$PATH:/Users/borisdev/.local/bin"
@@ -151,10 +148,6 @@ alias uv="/opt/homebrew/bin/uv"
 export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
 export PATH=/Library/TeX/texbin:$PATH
-export PATH=/Library/TeX/texbin:$PATH
-
-export PATH=/Library/TeX/texbin:$PATH
-# export ANTHROPIC_API_KEY="$(cat ~/ANTHROPIC_API_KEY)"
-    export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="$HOME/.nvm"
     [ -s "$(brew --prefix nvm)/nvm.sh" ] && . "$(brew --prefix nvm)/nvm.sh"
     [ -s "$(brew --prefix nvm)/etc/bash_completion.d/nvm" ] && . "$(brew --prefix nvm)/etc/bash_completion.d/nvm"

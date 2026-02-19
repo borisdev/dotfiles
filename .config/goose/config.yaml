@@ -99,5 +99,7 @@ extensions:
     bundled: null
     available_tools: []
 AZURE_OPENAI_ENDPOINT: https://boris-m3ndov9n-eastus2.cognitiveservices.azure.com/
-AZURE_OPENAI_DEPLOYMENT_NAME: https://boris-m3ndov9n-eastus2.cognitiveservices.azure.com/
+# AZURE_OPENAI_DEPLOYMENT_NAME: gpt-5.2-chat
+# AZURE_OPENAI_DEPLOYMENT_NAME: gpt-5.1-codex-max
+AZURE_OPENAI_DEPLOYMENT_NAME: gpt-5.2-codex
 AZURE_OPENAI_API_VERSION: 2025-04-01-preview

@@ -1,0 +1,14 @@
+model = "gpt-5.2-codex"  # Replace with your actual Azure model deployment name
+model_provider = "azure"
+model_reasoning_effort = "medium"
+
+[model_providers.azure]
+name = "Azure OpenAI"
+env_key = "AZURE_OPENAI_API_KEY"
+base_url = "https://boris-m3ndov9n-eastus2.openai.azure.com/openai/v1"
+model = "gpt-5.2-codex"
+wire_api = "responses"
+
+
+[projects."/Users/borisdev"]
+trust_level = "trusted"
