@@ -1,5 +1,6 @@
 model_provider = "azure"
 model_reasoning_effort = "medium"
+model = "gpt-5.2-codex"
 
 [model_providers.azure]
 name = "Azure OpenAI"
