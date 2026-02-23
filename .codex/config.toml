@@ -13,5 +13,11 @@ wire_api = "responses"
 [projects."/Users/borisdev"]
 trust_level = "trusted"
 
+[projects."/Users/borisdev/workspace/nobsmed-v2"]
+trust_level = "trusted"
+
 [tui]
-alternate_screen = "never"
+alternate_screen = "auto"
+
+[notice.model_migrations]
+"gpt-5.2-codex" = "gpt-5.3-codex"
